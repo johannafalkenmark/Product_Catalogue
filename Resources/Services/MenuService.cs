@@ -26,7 +26,7 @@ public static class MenuService //Lägg till interface här?
             switch (option) 
             {
                 case 1:
-                    Product_Menu.AddNewProductMenu();
+                    AddNewProductMenu();
                     
                     break;
 
@@ -59,8 +59,7 @@ public static class MenuService //Lägg till interface här?
 
 
     //OPTION 1:
-    public class Product_Menu
-    {
+  
         public static void AddNewProductMenu() 
         {
 
@@ -94,9 +93,7 @@ public static class MenuService //Lägg till interface här?
             
             //NÄR/VAR lägger till metoden addproducttolist? 
             //HUR få tillgång till product service. och l
-            ProductService.AddProductToList(product);
-
-            Main_App.Services.ProductService.Add
+          
          
 
           
@@ -105,7 +102,7 @@ public static class MenuService //Lägg till interface här?
         
 
 
-    }
+    
 
 
     //OPTION 2:

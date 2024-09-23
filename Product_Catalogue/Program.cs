@@ -6,7 +6,10 @@ using Main_App.Menus;
 using Main_App.Models;
 using Main_App.Services;
 
-public static IProductService<Product, Product> _productService = new ProductService(@"C:\Projects School\Product_Catalogue\Product_Catalogue\Products.json");
+
+//Skall denna vara här?
+//FRÅGA summerad. HUR får jag in metod från product service ini product menu. de har båda interfaces.
+ IProductService<Product, Product> _productService = new ProductService(@"C:\Projects School\Product_Catalogue\Product_Catalogue\Products.json");
 
 
 Main_Menu.MainMenu();

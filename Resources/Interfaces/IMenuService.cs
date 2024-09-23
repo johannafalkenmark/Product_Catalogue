@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Main_App.Interfaces
 {
-    public interface IMenuService
+    public interface IMenuService<T> where T : class
     {
     }
 }
