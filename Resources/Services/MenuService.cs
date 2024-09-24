@@ -7,19 +7,21 @@ using System.IO;
 
 namespace Main_App.Services;
 
-
-
-
-
-
-public static class MenuService //Lägg till interface här?
+public class MenuService //Lägg till interface här?
 {
-    //RADEN NEDAN har jag gjort för att jag har ett interface och därför behöver jag göra detta onödigt komplicerade.
-    //den riskerar skapa listan varje gång product service anropas vilket v iinte vill därför flyttade till program.
+    //RADEN NEDAN har jag gjort för att jag har ett interface och därför behöver jag göra detta 
+    //den riskerar skapa listan varje gång product service anropas vilket jag inte vill därför flyttade till program.
     //Behöve rhitta ett sätt att anropa metoden addproductstolist från productservice hit
-   // public static IProductService<Product, Product> _productService = new ProductService(@"C:\Projects School\Product_Catalogue\Product_Catalogue\Products.json");
+    
+    
+    
+    
+    //HANS säger att jag kan ha den här nedan det är lugnt för jag kallar bara på klassen Menu service en gång (så filen ska inte skapas flera gånger).
+    //kan ta bort instanseringen från program. Ta bort static från vissa ställen för de kan ej ärva. behöver nu instansera menuservice (hur? i program?) 
+    public IProductService<Product, Product> _productService = new ProductService(@"C:\Projects School\Product_Catalogue\Product_Catalogue\Products.json");
 
-    public static void MenuOptions(string selectedOption) //ligger som private i lektionsexempel - ändra?
+
+    public void MenuOptions(string selectedOption) //ligger som private i lektionsexempel - ändra?
     {
         if (int.TryParse(selectedOption, out int option))
         {
@@ -48,7 +50,7 @@ public static class MenuService //Lägg till interface här?
 
 
                 default:
-                    Console.WriteLine("Invalid option selected");
+                    Console.WriteLine("\n Invalid option selected, try again");
                     Console.ReadKey();
                     break;
         }
@@ -60,10 +62,8 @@ public static class MenuService //Lägg till interface här?
 
     //OPTION 1:
   
-        public static void AddNewProductMenu() 
+        public void AddNewProductMenu() 
         {
-
-            
 
             Console.Clear();
             Console.WriteLine("---CREATING/ADDING NEW PRODUCT---");
@@ -88,13 +88,13 @@ public static class MenuService //Lägg till interface här?
             var product = new Product(productName, productPrice, productCategoryId);
 
             Console.WriteLine($"Automatic generated Product ID: {product.Id}");
-           
-            
-            
-            //NÄR/VAR lägger till metoden addproducttolist? 
-            //HUR få tillgång till product service. och l
-          
-         
+
+
+
+       
+        //HUR få tillgång till product service metoden addproducttolist:
+
+        _productService.AddProductToList(product);
 
           
 
@@ -105,11 +105,8 @@ public static class MenuService //Lägg till interface här?
     
 
 
-    //OPTION 2:
 
-
-
-    private static void ExitApplicationMenu()
+    private void ExitApplicationMenu()
     {
         Console.Clear();
         Console.WriteLine("Are you sure you want to exit? Enter y/n.");

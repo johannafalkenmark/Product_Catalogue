@@ -2,12 +2,18 @@
 //kan vara internal. är bara i det här projektet.
 
 using System;
+using Main_App.Models;
 using Main_App.Services;
 namespace Main_App.Menus;
 
-    public class Main_Menu //BEhöver man menu vara en klass?
-    {
-    public static void MainMenu() //Sätter som static då den kan börja köras direkt?
+    public class Main_Menu
+{
+
+
+
+    MenuService _menuService = new MenuService();
+ 
+    public void MainMenu() 
     {
         Console.Clear();
         Console.WriteLine("1. Create New Product");
@@ -24,7 +30,7 @@ namespace Main_App.Menus;
 
 
 
-        MenuService.MenuOptions(Console.ReadLine() ?? ""); //Skapat metod för detta i Menu service
+        _menuService.MenuOptions(Console.ReadLine() ?? ""); 
 
     }
 }

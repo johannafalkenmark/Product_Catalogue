@@ -9,20 +9,22 @@ using Main_App.Services;
 
 //Skall denna vara här?
 //FRÅGA summerad. HUR får jag in metod från product service ini product menu. de har båda interfaces.
- IProductService<Product, Product> _productService = new ProductService(@"C:\Projects School\Product_Catalogue\Product_Catalogue\Products.json");
+// IProductService<Product, Product> _productService = new ProductService(@"C:\Projects School\Product_Catalogue\Product_Catalogue\Products.json");
+
+//BEHÖVER instansera main menu
 
 
-Main_Menu.MainMenu();
+var Main_Menu = new Main_Menu();
+
+while (true)
+{
+    Main_Menu.MainMenu();
+
 
 Console.ReadKey();
 
-/*
+}
 
 
 
-// while(true) { 
 
-//}
-
-
-*/

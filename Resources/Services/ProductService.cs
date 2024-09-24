@@ -14,10 +14,7 @@ namespace Main_App.Services;
 public class ProductService : IProductService<Product, Product>
 {
     private readonly IFileService _fileService; //Jag instanserar filen
-    public List<Product> _products = []; //HÄR SKAPAS SJÄLVA LISTAN 
-
-
-
+    private List<Product> _products = new List<Product>(); //HÄR SKAPAS SJÄLVA LISTAN 
 
 
     public ProductService(string filePath)
