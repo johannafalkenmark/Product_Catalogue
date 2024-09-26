@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Main_App.Services
 {
-    internal class CategoryService //Lägg till interface product service här
+    internal class CategoryService 
     {
     }
 }

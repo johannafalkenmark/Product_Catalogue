@@ -11,7 +11,7 @@ public class MenuService
 {
     //HANS säger att jag kan ha den här nedan det är lugnt för jag kallar bara på klassen Menu service en gång (så filen ska inte skapas flera gånger).
     //kan ta bort instanseringen från program. Ta bort static från vissa ställen för de kan ej ärva. behöver nu instansera menuservice (hur? i program?) 
-    public IProductService<Product, Product> _productService = new ProductService(@"C:\Projects School\Product_Catalogue\Product_Catalogue\Products.json");
+    public IProductService<Product, Product> _productService = new ProductService();
 
 
     public void MenuOptions(string selectedOption)
@@ -26,11 +26,11 @@ public class MenuService
                     break;
 
                 case 2:
-                    ViewAllProductsMenu();
+                   // ViewAllProductsMenu();
                     break;
 
                 case 3:
-                    ViewSingleMenu();
+                    // ViewSingleMenu();
                     break;
 
                 case 4:
@@ -49,10 +49,6 @@ public class MenuService
             }
 
         }
-
-
-
-
 
     }
 
@@ -89,63 +85,6 @@ public class MenuService
 
     }
 
-    public void ViewAllProductsMenu()
-    {
-        var productList = _productService.GetAllProducts(); //Skapa denna metod
-
-        Console.Clear();
-        Console.WriteLine("View All Products \n");
-
-        if (productList.Any()) //kontrollerar om det finns något i listan eller inte
-        {
-            foreach (Product product in _productList)
-            {
-                Console.WriteLine($"{product.Name} <{product.Price}> SEK");
-                Console.WriteLine($"Uniqe ID {product.Id}");
-                Console.WriteLine($"Category {product.CategoryId} \n");
-            }
-        }
-        else
-        {
-            Console.WriteLine("No products in list. \n");
-        }
-
-        Console.WriteLine("Press Any key to continue.");
-        Console.ReadKey();
-
-    }
-
-
-
-    public void ViewSingleMenu()
-    {
-        Console.Clear();
-        Console.WriteLine("View product to update  \n ");
-
-        Console.WriteLine("Enter product ID: ");
-        var Id = Console.ReadLine() ?? "";
-
-        var product = _productService.GetProduct(Id);
-        if (product != null)
-        {
-            Console.Clear();
-            Console.WriteLine($"Update name or Price for {product.Name} \n");
-
-            Console.WriteLine($"Name: {product.Name}");
-            Console.WriteLine($"Price:  {product.Price}");
-            Console.WriteLine($"ID:  {product.Id}");
-            Console.WriteLine($"Category: {product.CategoryId} \n");
-        }
-        else
-        {
-            Console.WriteLine("No product was found \n");
-        }
-
-        Console.WriteLine("Press Any key to continue");
-        Console.ReadKey();
-
-    }
-
 
     static void ExitApplicationMenu()
     {
@@ -158,3 +97,67 @@ public class MenuService
 
 
 }
+
+
+
+
+
+
+/* public void ViewAllProductsMenu()
+{
+    var productList = _productService.GetAllProducts(); //Skapa denna metod
+
+    Console.Clear();
+    Console.WriteLine("View All Products \n");
+
+    if (productList.Any()) //kontrollerar om det finns något i listan eller inte
+    {
+        foreach (Product product in productList)
+        {
+            Console.WriteLine($"{product.Name} <{product.Price}> SEK");
+            Console.WriteLine($"Uniqe ID {product.Id}");
+            Console.WriteLine($"Category {product.CategoryId} \n");
+        }
+    }
+    else
+    {
+        Console.WriteLine("No products in list. \n");
+    }
+
+    Console.WriteLine("Press Any key to continue.");
+    Console.ReadKey();
+
+}
+
+
+
+public void ViewSingleMenu()
+{
+    Console.Clear();
+    Console.WriteLine("View product to update  \n ");
+
+    Console.WriteLine("Enter product ID: ");
+    var Id = Console.ReadLine() ?? "";
+
+    var product = _productService.GetProduct(Id);
+    if (product != null)
+    {
+        Console.Clear();
+        Console.WriteLine($"Update name or Price for {product.Name} \n");
+
+        Console.WriteLine($"Name: {product.Name}");
+        Console.WriteLine($"Price:  {product.Price}");
+        Console.WriteLine($"ID:  {product.Id}");
+        Console.WriteLine($"Category: {product.CategoryId} \n");
+    }
+    else
+    {
+        Console.WriteLine("No product was found \n");
+    }
+
+    Console.WriteLine("Press Any key to continue");
+    Console.ReadKey();
+
+}
+
+*/

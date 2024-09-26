@@ -19,7 +19,7 @@ public class ProductService : IProductService<Product, Product>
     private readonly IFileService _fileService; //Jag instanserar filen
     private List<Product> _products = new List<Product>(); //HÄR SKAPAS SJÄLVA LISTAN 
 
-
+/*
     public ProductService(string filePath)
     {
         _fileService = new FileService(filePath);
@@ -51,15 +51,15 @@ public class ProductService : IProductService<Product, Product>
             return new ResponseResult<IEnumerable<Product>> { Success = false, Message = ex.Message };
         }
     }
+*/
 
-
-    public ResponseResult<Product> AddProductToList(Product product) //Här är metoden för att LÄGGA TILL PRODUKT i listan. SKALL Alla metoder läggas till i klassen Product service? ResponseResult betyder att jag vill få tillabaka svar om det fungerat? en bool, innehåll och meddelande?
+    public ResponseResult<Product> AddProductToList(Product product) 
     {
-        try //lägger till try catch för att fånga upp error ifall det kraschar
+        try 
 
         {
 
-            //LÄGG till GetProductsfromfile(); 
+            //LÄGG till AddProductsFromfile(); 
             if (!_products.Any(x => x.Name == product.Name)) //Säger om namnet på produkt inte redan finns - lägg till produkt
 
             {
@@ -83,10 +83,11 @@ public class ProductService : IProductService<Product, Product>
     }
 
 
+
     public ResponseResult<IEnumerable<Product>> GetAllProducts()
     {
 
-        GetProductsFromFile();
+        //AddProductsFromFile();
 
         foreach (Product product in _products)
         {
@@ -95,22 +96,12 @@ public class ProductService : IProductService<Product, Product>
         return new ResponseResult<IEnumerable<Product>> { Success = true }; 
         }
 
-    public void GetProductsFromFile()
-    {
-        try
-        {
-            var content = _fileService.GetFromFile(); //Hämtar från filen
-            if (!string.IsNullOrEmpty(content)) //om det inte är tomt eller null så kan vi packa upp formatet nedan
-                _products = JsonConvert.DeserializeObject<List<Product>>(content)!;
-
-        }
-        catch { }
-    }
+   
 
 
     public Product GetProduct(string id)
     {
-        GetProductsFromFile(); //hämtar först alla produkter
+        //AddProductsFromFile(); //hämtar först alla produkter
 
         try
         {
@@ -127,6 +118,8 @@ public class ProductService : IProductService<Product, Product>
 
     public ResponseResult<Product> UpdateProductNameOrPriceBasedOnID(string ID, Product product) //Skapa metoden för att uppdatera här. först kalla på get product metoden?
     {
+        
+
         throw new NotImplementedException();
     }
 
