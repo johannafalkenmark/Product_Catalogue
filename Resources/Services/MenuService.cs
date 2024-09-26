@@ -26,11 +26,11 @@ public class MenuService
                     break;
 
                 case 2:
-                   // ViewAllProductsMenu();
+                   ViewAllProductsMenu();
                     break;
 
                 case 3:
-                    // ViewSingleMenu();
+                    ViewSingleMenu();
                     break;
 
                 case 4:
@@ -56,12 +56,12 @@ public class MenuService
     public void AddNewProductMenu()
     {
         Console.Clear();
-        Console.WriteLine("---CREATING/ADDING NEW PRODUCT---");
+        Console.WriteLine("---CREATING/ADDING PRODUCT---");
 
-        Console.Write("Enter name of new product: ");
+        Console.Write("Enter name of product: ");
         string productName = Console.ReadLine() ?? "";
 
-        Console.Write("Price of new product: ");
+        Console.Write("Price of product: ");
         string productPrice = Console.ReadLine() ?? "";
 
         Console.Write("Category of product (Enter 1-3): ");
@@ -70,11 +70,9 @@ public class MenuService
         Console.WriteLine($"Thank you, the following product is saved: ");
 
 
-        Console.WriteLine($"Name of product: {productName}");
-        Console.WriteLine($"Price of product: {productPrice}  ");
-        Console.WriteLine($"Category of product: {productCategoryId}");
-        Console.WriteLine($"Price of product: {productCategoryId}  ");
-
+        Console.WriteLine($"Name: {productName}");
+        Console.WriteLine($"Price: {productPrice}  ");
+        Console.WriteLine($"Category: {productCategoryId}");
 
         var product = new Product(productName, productPrice, productCategoryId);
 
@@ -84,6 +82,49 @@ public class MenuService
         _productService.AddProductToList(product); //Här läggs den till i listan
 
     }
+    public void ViewAllProductsMenu()
+{
+    var productList = _productService.GetAllProducts(); //Skapa denna metod
+
+    Console.Clear();
+    Console.WriteLine("View All Products \n");
+
+        _productService.GetAllProducts();
+
+    Console.WriteLine("Press Any key to continue.");
+    Console.ReadKey();
+
+}
+
+
+
+    public void ViewSingleMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("View product to update  \n ");
+
+        Console.WriteLine("Enter product ID: ");
+        var Id = Console.ReadLine() ?? "";
+
+        var product = _productService.GetSingleProduct(Id);
+        if (product != null)
+        {
+            Console.Clear();
+            Console.WriteLine($"We have found your product, press to view."); //Hur kan jag komma åt produktens namn tex här?
+            Console.ReadKey();
+            //DENNA KÖR JUST NU IF SATSEN EFTER METODEN. lös detta. egentligen vill vi ha cw hit från metoden.
+          
+        }
+        else
+        {
+            Console.WriteLine("No product was found \n");
+        }
+        
+
+        
+
+    }
+
 
 
     static void ExitApplicationMenu()
@@ -94,8 +135,6 @@ public class MenuService
         if (answer == "n")
             Environment.Exit(0);
     }
-
-
 }
 
 
@@ -103,61 +142,3 @@ public class MenuService
 
 
 
-/* public void ViewAllProductsMenu()
-{
-    var productList = _productService.GetAllProducts(); //Skapa denna metod
-
-    Console.Clear();
-    Console.WriteLine("View All Products \n");
-
-    if (productList.Any()) //kontrollerar om det finns något i listan eller inte
-    {
-        foreach (Product product in productList)
-        {
-            Console.WriteLine($"{product.Name} <{product.Price}> SEK");
-            Console.WriteLine($"Uniqe ID {product.Id}");
-            Console.WriteLine($"Category {product.CategoryId} \n");
-        }
-    }
-    else
-    {
-        Console.WriteLine("No products in list. \n");
-    }
-
-    Console.WriteLine("Press Any key to continue.");
-    Console.ReadKey();
-
-}
-
-
-
-public void ViewSingleMenu()
-{
-    Console.Clear();
-    Console.WriteLine("View product to update  \n ");
-
-    Console.WriteLine("Enter product ID: ");
-    var Id = Console.ReadLine() ?? "";
-
-    var product = _productService.GetProduct(Id);
-    if (product != null)
-    {
-        Console.Clear();
-        Console.WriteLine($"Update name or Price for {product.Name} \n");
-
-        Console.WriteLine($"Name: {product.Name}");
-        Console.WriteLine($"Price:  {product.Price}");
-        Console.WriteLine($"ID:  {product.Id}");
-        Console.WriteLine($"Category: {product.CategoryId} \n");
-    }
-    else
-    {
-        Console.WriteLine("No product was found \n");
-    }
-
-    Console.WriteLine("Press Any key to continue");
-    Console.ReadKey();
-
-}
-
-*/

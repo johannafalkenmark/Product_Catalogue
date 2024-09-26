@@ -15,5 +15,6 @@ public interface IProductService<T, TResult> where T : class where TResult : cla
 
     public ResponseResult<TResult> UpdateProductNameOrPriceBasedOnID(string id, T updateContact); //Uppdatera produkts namn och pris baserat på ID
 
+    public ResponseResult<TResult> GetSingleProduct(string id);
     public ResponseResult<TResult> RemoveProductFromListBasedOnID(string id); //Ta bort produkt från listan baserat på ID
 }

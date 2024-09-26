@@ -19,13 +19,14 @@ public class ProductService : IProductService<Product, Product>
     private readonly IFileService _fileService; //Jag instanserar filen
     private List<Product> _products = new List<Product>(); //HÄR SKAPAS SJÄLVA LISTAN 
 
-/*
-    public ProductService(string filePath)
+
+    public ProductService()
     {
-        _fileService = new FileService(filePath);
+        _fileService = new FileService(_filePath);
         _products = [];
-        AddProductsFromFile(); //Börjar med att hämta befinliga listan/filen
+       // AddProductsFromFile(); //Börjar med att hämta befinliga listan/filen
     }
+    /*
 
     public ResponseResult<IEnumerable<Product>> AddProductsFromFile()
     {
@@ -64,7 +65,8 @@ public class ProductService : IProductService<Product, Product>
 
             {
                 _products.Add(product);
-                Console.WriteLine($"Your product have been added to the List: \n Productname: {product.Name}, Price: {product.Price} , Category is set to {product.CategoryId}"); 
+                Console.WriteLine($"Your product have been added to the List: \nProductname: {product.Name}, Price: {product.Price} SEK , Category is set to {product.CategoryId}");
+                Console.WriteLine("Press Any key to Continue");
                 return new ResponseResult<Product> { Success = true }; 
 
             }
@@ -79,34 +81,62 @@ public class ProductService : IProductService<Product, Product>
        
     
         return new ResponseResult<Product> { Success = false, Message = "Name of product already exists, choose new name."};
- 
     }
-
 
 
     public ResponseResult<IEnumerable<Product>> GetAllProducts()
     {
 
         //AddProductsFromFile();
+        //lägg till try catch
 
         foreach (Product product in _products)
         {
-            Console.WriteLine(product.Name);
+            Console.WriteLine($"{product.Name}, {product.Price} SEK");
+            Console.WriteLine($"Uniqe ID {product.Id}");
+            Console.WriteLine($"Category {product.CategoryId} \n");
         }
         return new ResponseResult<IEnumerable<Product>> { Success = true }; 
         }
 
-   
 
 
-    public Product GetProduct(string id)
+
+    public ResponseResult<Product> GetSingleProduct(string id)
     {
         //AddProductsFromFile(); //hämtar först alla produkter
 
         try
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
-            return product ?? null!; //retiurenera produkten eller returnera null
+           
+            //NEDAN SKA EGENTLIGEN LIGGA UNDER ANDRA METODEN "UPDATE"
+            Console.Clear();
+            Console.WriteLine($"Update name or Price for \n");
+            Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
+     
+            Console.WriteLine($"\nPress Any key");
+
+            Console.ReadKey();
+            Console.Clear();
+
+            Console.WriteLine($"\n New Name:");
+            product.Name = Console.ReadLine() ?? "";
+
+            Console.WriteLine($"\n New Price:");
+            product.Price = Console.ReadLine() ?? "";
+
+            Console.WriteLine("Press Any key To view update.");
+            Console.Clear();
+
+            Console.WriteLine($"Updated Name: {product.Name} \n");
+            Console.WriteLine($"Updated price: {product.Price} \n");
+
+            Console.WriteLine("Press Any key to return to Main Menu");
+            Console.ReadKey();
+
+            return new ResponseResult<Product> { Success = true, Message = "We have found your product." };
+
         }
         catch
         {
