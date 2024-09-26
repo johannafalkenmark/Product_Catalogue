@@ -1,11 +1,4 @@
-﻿//Skapa klass som heter Product
-//egenskaper namn, pris
-//produkten ska få automatiskt unikt ID
-//Skapa en lista av produkter för att lagra produkterna List < Product >
-
-
-
-
+﻿
 namespace Main_App.Models;
 
 
@@ -22,7 +15,7 @@ public class Product
 
 
 
-    public Product(string _name, string _price,  string _categoryId) //Detta är konstruktorn så att jag kan fylla i direkt i parentesen när jag skapar en produkt
+    public Product(string _name, string _price,  string _categoryId) //Detta är konstruktorn så att jag kan fylla i direkt i parentesen när jag skapar en produkt //VARFÖR BEHÖVER JAG DETTA?
     {
         Name = _name;
         Price = _price;

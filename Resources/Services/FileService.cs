@@ -1,16 +1,10 @@
-﻿//Implementera en funktion som sparar alla produkter i listan till en textfil. Filen ska innehålla varje produkts information och vara sparat i .json-format.
-//Implementera en funktion som läser in produkter från en tidigare sparad textfil och lägger till dem i listan.
+﻿using Main_App.Models;
+using Resources.Interfaces;
 
-// Update: Lagt till interface för fileservice.
-
-
-using Main_App.Interfaces;
-using Main_App.Models;
-
-namespace Main_App.Services;
+namespace Resources.Services;
 
 
-internal class FileService : IFileService
+public class FileService : IFileService
 {
 
     private readonly string _filePath; //HÄR skapar variabel för sökväg till filen
@@ -28,32 +22,29 @@ internal class FileService : IFileService
     {
         try
         {
-            if (!File.Exists(_filePath))  //Säger Om INTE filen existerer skicka tillbaka file not found
-            { throw new FileNotFoundException("File not found."); }
+            if (File.Exists(_filePath))  //Säger Om filen finns gör detta
+            {
 
-            using var sr = new StreamReader(_filePath); //USING existerar endast i måsvinagrna sen raderas så ej tar upp minne
-            var content = sr.ReadToEnd();
-            
-            return new ResponseResult<string> {Result = content,  Success = true };
+                using var sr = new StreamReader(_filePath); //USING existerar endast i måsvinagrna sen raderas så ej tar upp minne
+                var content = sr.ReadToEnd();
 
+                return new ResponseResult<string> { Result = content, Success = true };
+            }
         }
         catch (Exception ex)
-        { 
-        return new ResponseResult<string> { Success = false, Message = ex.Message };
+        {
+            return new ResponseResult<string> { Success = false, Message = ex.Message };
         }
+        return null!;
     }
 
-
-
-
-    //METOD Spara/skriva till filen: //SW är själva syntaxen?
 
 
     public ResponseResult<string> SaveToFile(string content)
     {
         try
         {
-            using var sw = new StreamWriter(_filePath, false);
+            using var sw = new StreamWriter(_filePath);
             sw.WriteLine(content);
             return new ResponseResult<string> { Success = true };
 

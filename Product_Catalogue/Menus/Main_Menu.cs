@@ -3,10 +3,10 @@
 
 using System;
 using Main_App.Models;
-using Main_App.Services;
+using Resources.Services;
 namespace Main_App.Menus;
 
-    public class Main_Menu
+public class Main_Menu
 {
 
 
@@ -16,17 +16,17 @@ namespace Main_App.Menus;
     public void MainMenu() 
     {
         Console.Clear();
-        Console.WriteLine("1. Create New Product");
+        Console.WriteLine("1.".PadRight(10) + "Create New Product");
 
-        Console.WriteLine("2. Show list of all Products");
+        Console.WriteLine("2.".PadRight(10) + "Show list of all Products");
 
-        Console.WriteLine("3. Update existing product ");
+        Console.WriteLine("3.".PadRight(10) + "Update existing product ");
 
-        Console.WriteLine("4. Remove product ");
+        Console.WriteLine("4.".PadRight(10) + "Remove product ");
 
-        Console.WriteLine("0. Exit");
+        Console.WriteLine("0.".PadRight(10) + "Exit");
 
-        Console.Write("Enter an option: ");
+        Console.Write("\n Enter an option (0-4): ");
 
 
 

@@ -4,15 +4,18 @@
 //Implementera en funktion för att uppdatera en produkts namn och pris baserat på dess ID
 //Lägg till en kontroll i funktionen som lägger till en produkt för att säkerställa att produkter med samma namn inte kan läggas till två gånger.
 
-using Main_App.Interfaces;
 using Main_App.Models;
 using Newtonsoft.Json;
+using Resources.Interfaces;
+using Resources.Services;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 
 namespace Main_App.Services;
 
 public class ProductService : IProductService<Product, Product>
 {
+    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, "Johannasprodukter.json"); //Bygger upp säkväg automatiskt beroende på vilken dator man är på
     private readonly IFileService _fileService; //Jag instanserar filen
     private List<Product> _products = new List<Product>(); //HÄR SKAPAS SJÄLVA LISTAN 
 
@@ -50,18 +53,19 @@ public class ProductService : IProductService<Product, Product>
     }
 
 
-
     public ResponseResult<Product> AddProductToList(Product product) //Här är metoden för att LÄGGA TILL PRODUKT i listan. SKALL Alla metoder läggas till i klassen Product service? ResponseResult betyder att jag vill få tillabaka svar om det fungerat? en bool, innehåll och meddelande?
     {
         try //lägger till try catch för att fånga upp error ifall det kraschar
 
         {
+
+            //LÄGG till GetProductsfromfile(); 
             if (!_products.Any(x => x.Name == product.Name)) //Säger om namnet på produkt inte redan finns - lägg till produkt
 
             {
                 _products.Add(product);
-                Console.WriteLine($"You have added Productname: {product.Name}, Price: {product.Price} , Category is set to {product.CategoryId}"); //HUR får jag in inlagda namnen/variablerna på produkten
-                return new ResponseResult<Product> { Success = true }; //Här lägga till response result istället? JA :)
+                Console.WriteLine($"Your product have been added to the List: \n Productname: {product.Name}, Price: {product.Price} , Category is set to {product.CategoryId}"); 
+                return new ResponseResult<Product> { Success = true }; 
 
             }
 
@@ -72,32 +76,17 @@ public class ProductService : IProductService<Product, Product>
                 {
                 Debug.WriteLine($"ERROR: {ex.Message}");
                 }
-
+       
+    
         return new ResponseResult<Product> { Success = false, Message = "Name of product already exists, choose new name."};
-
-
-        
-        
-        
-        
+ 
     }
 
 
-
-
-
-
-
-    public ResponseResult<Product> RemoveProductFromListBasedOnID(string ID)
+    public ResponseResult<IEnumerable<Product>> GetAllProducts()
     {
-        throw new NotImplementedException();
-    }
 
-
-
-
-    public ResponseResult<IEnumerable<Product>> ShowAllProductsInList()
-    {
+        GetProductsFromFile();
 
         foreach (Product product in _products)
         {
@@ -106,36 +95,46 @@ public class ProductService : IProductService<Product, Product>
         return new ResponseResult<IEnumerable<Product>> { Success = true }; 
         }
 
+    public void GetProductsFromFile()
+    {
+        try
+        {
+            var content = _fileService.GetFromFile(); //Hämtar från filen
+            if (!string.IsNullOrEmpty(content)) //om det inte är tomt eller null så kan vi packa upp formatet nedan
+                _products = JsonConvert.DeserializeObject<List<Product>>(content)!;
 
-    public ResponseResult<Product> UpdateProductNameOrPriceBasedOnID(string ID, Product product)
+        }
+        catch { }
+    }
+
+
+    public Product GetProduct(string id)
+    {
+        GetProductsFromFile(); //hämtar först alla produkter
+
+        try
+        {
+            var product = _products.FirstOrDefault(p => p.Id == id);
+            return product ?? null!; //retiurenera produkten eller returnera null
+        }
+        catch
+        {
+            return null!;
+        }
+    }
+
+   
+
+    public ResponseResult<Product> UpdateProductNameOrPriceBasedOnID(string ID, Product product) //Skapa metoden för att uppdatera här. först kalla på get product metoden?
     {
         throw new NotImplementedException();
     }
-}
 
-//EXEMPEL NEDAN PÅ USER LIST MENU:
-//
-/*
-private static void ListAllUSersMenu()
-{
-Console.Clear();
-Console.WriteLine("-- USER LIST --");
+    public ResponseResult<Product> RemoveProductFromListBasedOnID(string ID)
+    {
+        throw new NotImplementedException();
+    }
 
-var users = _userService.GetAllUsers();
-if (users != null)
-
-foreach (var user in users)
-{
-    Console.WriteLine($"{user.FirstName} {user.LastName} {user.Email}");
-}
-else
-{
-Console.WriteLine("No Users was found.");
-}
-Console.ReadKey();
-{
 
 }
-}
 
-*/
