@@ -3,15 +3,12 @@ using Main_App.Models;
 using Main_App.Services;
 
 
-var Main_Menu = new Main_Menu();
+Main_Menu _mainMenu = new();
 
 while (true)
 {
-    Main_Menu.MainMenu();
-
-
-Console.ReadKey();
-
+    _mainMenu.MainMenu();
+    Console.ReadKey();
 }
 
 

@@ -1,18 +1,10 @@
-﻿// Här har vi själva menyn.
-//kan vara internal. är bara i det här projektet.
-
-using System;
-using Main_App.Models;
-using Resources.Services;
+﻿
 namespace Main_App.Menus;
 
 public class Main_Menu
 {
+    Product_Menu _productMenu = new();
 
-
-
-    MenuService _menuService = new MenuService();
- 
     public void MainMenu() 
     {
         Console.Clear();
@@ -24,13 +16,13 @@ public class Main_Menu
 
         Console.WriteLine("4.".PadRight(10) + "Remove product ");
 
+        Console.WriteLine("5.".PadRight(10) + "Save products to file ");
+
         Console.WriteLine("0.".PadRight(10) + "Exit");
 
-        Console.Write("\n Enter an option (0-4): ");
+        Console.Write("\n Enter an option (0-5): ");
 
-
-
-        _menuService.MenuOptions(Console.ReadLine() ?? ""); 
+     _productMenu.MenuOptions(Console.ReadLine() ?? ""); 
 
     }
 }

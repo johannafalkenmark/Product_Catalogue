@@ -15,17 +15,14 @@ public class FileService : IFileService
     }
 
 
-
-
-    //METOD Läsa från filen
     public ResponseResult<string> GetFromFile()
     {
         try
         {
-            if (File.Exists(_filePath))  //Säger Om filen finns gör detta
+            if (File.Exists(_filePath))  
             {
 
-                using var sr = new StreamReader(_filePath); //USING existerar endast i måsvinagrna sen raderas så ej tar upp minne
+                using var sr = new StreamReader(_filePath); 
                 var content = sr.ReadToEnd();
 
                 return new ResponseResult<string> { Result = content, Success = true };
@@ -39,7 +36,6 @@ public class FileService : IFileService
     }
 
 
-
     public ResponseResult<string> SaveToFile(string content)
     {
         try
@@ -47,6 +43,7 @@ public class FileService : IFileService
             using var sw = new StreamWriter(_filePath);
             sw.WriteLine(content);
             return new ResponseResult<string> { Success = true };
+
 
         }
         catch (Exception ex)

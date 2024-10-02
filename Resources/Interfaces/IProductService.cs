@@ -1,20 +1,19 @@
-﻿
-//Specificerar här vilka metider som ska finnas i vår productservice. gör själva funktionalieteten i productservice sen
-
-
-//Specificerar här vilka metider som ska finnas i vår productservice. gör själva funktionalieteten i productservice sen
-using Main_App.Models;
+﻿using Main_App.Models;
 
 namespace Resources.Interfaces;
 
 public interface IProductService<T, TResult> where T : class where TResult : class
 {
-    public ResponseResult<TResult> AddProductToList(T product); //Ska kunna lägga till produkter till listan
+    public ResponseResult<TResult> AddProductToList(T product); 
+  
 
-    public ResponseResult<IEnumerable<TResult>> GetAllProducts(); //Visa alla produkter i listan med ID namn och pris (foreach-loop) - skapa funktionalitet i prodctservice
+    public ResponseResult<IEnumerable<TResult>> GetAllProducts(); 
 
-    public ResponseResult<TResult> UpdateProductNameOrPriceBasedOnID(string id, T updateContact); //Uppdatera produkts namn och pris baserat på ID
+    public ResponseResult<TResult> UpdateProduct(string id); 
 
-    public ResponseResult<TResult> GetSingleProduct(string id);
-    public ResponseResult<TResult> RemoveProductFromListBasedOnID(string id); //Ta bort produkt från listan baserat på ID
+    public ResponseResult<TResult> DeleteProduct(string id); 
+
+    public ResponseResult<TResult> CreateFile();
+
+    public ResponseResult<IEnumerable<TResult>> AddProductsFromFile();
 }
