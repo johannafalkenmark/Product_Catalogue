@@ -1,17 +1,21 @@
 ﻿using Main_App.Models;
-using Resources.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Main_App.Services
+namespace Main_App.Services;
+
+public static class CategoryService
 {
-    internal class CategoryService 
+
+    public static ResponseResult<IEnumerable<Category>> GetAllCategories()
     {
+        List<Category> categories = new List<Category>();
 
+        categories.Add(new Category("LOCAL FRUIT", "1")); 
+        
+        categories.Add(new Category("EXOTIC FRUIT", "2")); 
+       
 
+        return new ResponseResult<IEnumerable<Category>> { Success = true, Result = categories};
 
     }
+
 }

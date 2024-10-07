@@ -1,4 +1,4 @@
-﻿//Skapa en kategori för produkterna
+﻿
 namespace Main_App.Models
 {
     public class Category

@@ -2,19 +2,20 @@
 using Newtonsoft.Json;
 using Resources.Interfaces;
 using Resources.Services;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 
 namespace Main_App.Services;
 
-public class ProductService : IProductService<Product, Product>
+public class ProductService : IProductService<Fruit, Fruit>
 {
-    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, "Johannasproducts.json"); // Bygger upp säkväg automatiskt beroende på vilken dator man är på
+    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, "FRUITBASKET.json"); // Bygger upp säkväg automatiskt beroende på vilken dator man är på
     private readonly IFileService _fileService; 
     /*
     ProductService vill använda fileService och instansierar en lokal variabel som heter
     _fileService som kommer användas mer nedan i konstruktorn 
     */
-    private List<Product> _products = new List<Product>(); //HÄR SKAPAS SJÄLVA LISTAN 
+    private List<Fruit> _products = new List<Fruit>(); //HÄR SKAPAS SJÄLVA LISTAN 
 
 
     public ProductService() // <-- Konstruktorn
@@ -23,20 +24,39 @@ public class ProductService : IProductService<Product, Product>
 
         _products = [];
 
-        CreateFile(); //Skapar filen - Det sker alltså så fort product service instanseras?
+        CreateFile(); 
     }
 
 
-    public ResponseResult<Product> CreateFile()
+    public ResponseResult<Fruit> CreateFile()
     {
-        _fileService.SaveToFile("List of Products:"); //Måste jag skicka med ett värde här
-        return new ResponseResult<Product> { Success = true };
+        //gör json konvertering inför att skriva till filen
+        _fileService.SaveToFile("FRUITS"); //Här ska konvertart json format skickas in. 
+        return new ResponseResult<Fruit> { Success = true };
+    }
+
+    public ResponseResult<Fruit> GetProductFromName(string Name)
+    {
+        try
+        {
+            var result = _products.FirstOrDefault(x => x.Name == Name);
+            if (result == null)
+            {
+                return new ResponseResult<Fruit> { Message = "Can't find productname", Success = false };
+            }
+            return new ResponseResult<Fruit> {Result = result, Success = true };
+            
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"ERROR: {ex.Message}");
+            return new ResponseResult<Fruit> { Success = false, Message = ex.Message };
+        }
+
     }
 
 
-    
-
-    public ResponseResult<Product> AddProductToList(Product product) 
+    public ResponseResult<Fruit> AddProductToList(Fruit product) 
     {
         try 
         {
@@ -47,7 +67,7 @@ public class ProductService : IProductService<Product, Product>
                 _products.Add(product);
                 Console.WriteLine($"Your product have been added to the List: \nProductname: {product.Name}, Price: {product.Price} SEK , Category is set to {product.CategoryId}");
                 Console.WriteLine("Press Any key to Continue");
-                return new ResponseResult<Product> { Success = true }; 
+                return new ResponseResult<Fruit> { Success = true }; 
 
             }
         }
@@ -58,11 +78,11 @@ public class ProductService : IProductService<Product, Product>
 
 
         Console.WriteLine("\n WARNING! Productname already exists, product has not been saved to list or file.");
-        return new ResponseResult<Product> { Success = false, Message = "Name of product already exists, choose new name."};
+        return new ResponseResult<Fruit> { Success = false, Message = "Name of product already exists, choose new name."};
     }
 
 
-    public ResponseResult<IEnumerable<Product>> AddProductsFromFile() //NÄR Ska jag använda denna metod. lägger den till prod från filen till listan?
+    public ResponseResult<IEnumerable<Fruit>> AddProductsFromFile() //NÄR Ska jag använda denna metod. lägger den till prod från filen till listan?
     {
         try
         {
@@ -71,77 +91,63 @@ public class ProductService : IProductService<Product, Product>
 
             if (result.Success)
             {
-                _products = JsonConvert.DeserializeObject<List<Product>>(result.Result!)!;
+                _products = JsonConvert.DeserializeObject<List<Fruit>>(result.Result!)!;
                 Console.WriteLine("Success!!!");
-                return new ResponseResult<IEnumerable<Product>> { Success = true, Result = _products };
+                return new ResponseResult<IEnumerable<Fruit>> { Success = true, Result = _products };
             }
             else
                 Console.WriteLine("hamnar i else");
-            return new ResponseResult<IEnumerable<Product>> { Success = false, Message = result.Message };
+            return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = result.Message };
         }
         catch (Exception ex)
         {
             Console.WriteLine("hamnar i catch");
             Console.WriteLine(ex.Message);
-            return new ResponseResult<IEnumerable<Product>> { Success = false, Message = ex.Message };
+            return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = ex.Message };
         }
 
     }
-    public ResponseResult<IEnumerable<Product>> GetAllProducts()
+    public ResponseResult<IEnumerable<Fruit>> GetAllProducts()
     {
+
         try
         {
 
-            //AddProductsFromFile();
-            foreach (Product product in _products)
+           // AddProductsFromFile();
+            foreach (Fruit product in _products)
             {
+ 
                 Console.WriteLine($"{product.Name}, {product.Price} SEK");
                 Console.WriteLine($"Uniqe ID {product.Id}");
                 Console.WriteLine($"Category {product.CategoryId} \n");
+                //Lägga till att visa category name här? 
             }
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"ERROR: {ex.Message}");
         }
-        return new ResponseResult<IEnumerable<Product>> { Success = true }; 
+        return new ResponseResult<IEnumerable<Fruit>> { Success = true }; 
         }
 
 
-    public ResponseResult<Product> UpdateProduct(string id)
+    public ResponseResult<Fruit> GetProduct(string id)
     {
-        //AddProductsFromFile(); //hämtar först alla produkter VARFÖR de är väl bara sparade lokalt när programmet körs
+        //AddProductsFromFile(); 
 
         try
         {
+            
             var product = _products.FirstOrDefault(p => p.Id == id);
-           
-            //NEDAN SKA EGENTLIGEN LIGGA UNDER ANDRA METODEN "UPDATE". BEHÖVS då denna metod?
-            Console.Clear();
-            Console.WriteLine($"Update name or Price for \n");
-            Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
-     
-            Console.WriteLine($"\nPress Any key");
-
-            Console.ReadKey();
-            Console.Clear();
-
-            Console.WriteLine($"\n New Name:");
-            product.Name = Console.ReadLine() ?? "";
-
-            Console.WriteLine($"\n New Price:");
-            product.Price = Console.ReadLine() ?? "";
-
-            Console.WriteLine("Press Any key To view update.");
-            Console.Clear();
-
-            Console.WriteLine($"Updated Name: {product.Name} \n");
-            Console.WriteLine($"Updated price: {product.Price} \n");
-
-            Console.WriteLine("Press Any key to return to Main Menu");
-            Console.ReadKey();
-
-            return new ResponseResult<Product> { Success = true, Message = "We have found your product." };
+            if (product != null)
+            {
+                return new ResponseResult<Fruit> { Result = product, Success = true, Message = "We have found your product." };
+            }
+            else
+            {       
+                return new ResponseResult<Fruit> { Success = false, Message = "We have not found product" };
+          
+            }
         }
         catch
         {
@@ -152,28 +158,22 @@ public class ProductService : IProductService<Product, Product>
   
   
 
-    public ResponseResult<Product> DeleteProduct(string id)
+    public ResponseResult<Fruit> DeleteProduct(string id)
     {
         try
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
-            Console.Clear();
-            Console.WriteLine($"Press to delete product \n");
-            Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
-
-            Console.ReadKey();
-            Console.Clear();
 
             _products.Remove(product);
 
-            return new ResponseResult<Product> { Success = true, Message = "We have deleted your product." };
+            return new ResponseResult<Fruit> { Success = true, Message = "We have found and deleted product." };
 
         }
         catch
         {
-            return null!;
+            return new ResponseResult<Fruit> { Success = false, Message = "We have not deleted product" };
         }
-    }
+        }
 
 
 }

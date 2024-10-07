@@ -2,9 +2,7 @@
 
 namespace Main_App.Models;
 
-//Är denna alltid relevant - bör denna vara med - för testningens/felsökning skull eller?
-
-public class ResponseResult<T> where T : class //T innebär att vi kan välja vad vi ska skicka tillbaka
+public class ResponseResult<T> where T : class 
 {
     public bool Success { get; set; }
 

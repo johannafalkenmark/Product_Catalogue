@@ -1,22 +1,21 @@
 ﻿using Main_App.Models;
 using Main_App.Services;
 using Resources.Interfaces;
+using System.Xml.Linq;
 
 namespace Main_App.Menus;
 
 public class Product_Menu
 {
-    //HANS säger att jag kan ha den här nedan det är lugnt för jag kallar bara på klassen Menu service en gång (så filen ska inte skapas flera gånger).
-    //kan ta bort instanseringen från program. Ta bort static från vissa ställen för de kan ej ärva. behöver nu instansera menuservice (hur? i program?) 
-    public IProductService<Product, Product> _productService = new ProductService();
-    private readonly IFileService _fileService;
+    public IProductService<Fruit, Fruit> _productService = new ProductService();
+    private readonly IFileService _fileService; //Vad innebär denna. instansears fileservice här?
 
     public void MenuOptions(string selectedOption)
     {
-        if (int.TryParse(selectedOption, out int option)) //Varför fungerar ej denna
+        if (int.TryParse(selectedOption, out int option)) 
         {
             switch (option)
-            { //Ändra så att de är ints"1" etc
+            { 
                 case 1:
                     AddNewProductMenu();
 
@@ -44,13 +43,17 @@ public class Product_Menu
 
 
                 default:
-                    Console.WriteLine("\n Invalid option selected, try again");
+                    Console.WriteLine("\n Invalid number/option selected, try again");
                     Console.ReadKey();
                     break;
             }
-
         }
-
+        else
+        {
+            Console.WriteLine("\n Type a number 0-5");
+            Console.ReadKey();
+                
+        }
     }
 
 
@@ -58,32 +61,50 @@ public class Product_Menu
  
     public void AddNewProductMenu()
     {
+      
         Console.Clear();
-        Console.WriteLine("---CREATING/ADDING PRODUCT---");
+        Console.WriteLine("---CREATING/ADDING FRUIT---");
 
-        Console.Write("Enter name of product: ");
+        Console.Write("Enter name of Fruit: ");
         string productName = Console.ReadLine() ?? "";
 
-        Console.Write("Price of product: ");
-        string productPrice = Console.ReadLine() ?? "";
+        var findName = _productService.GetProductFromName(productName);
 
-        Console.Write("Category of product (Enter 1-3): ");
-        string productCategoryId = Console.ReadLine() ?? "";
+        if (findName.Success)
+        {
+            Console.WriteLine("Fruitname already exist try again");
+            Console.Write("Enter name of fruit: ");
+            productName = Console.ReadLine() ?? "";
+        }
+            Console.Write("Price of fruit: ");
+            string productPrice = Console.ReadLine() ?? "";
 
-        Console.Clear();
-        Console.WriteLine($"You have entered: ");
+            Console.Write("Category of fruit (Enter 1 = Local or 2 = Exotic): ");
+            string productCategoryId = Console.ReadLine() ?? "";
+
+            Console.Clear();
+            Console.WriteLine($"You have entered: ");
 
 
-        Console.WriteLine($"Name: {productName}");
-        Console.WriteLine($"Price: {productPrice}  ");
-        Console.WriteLine($"Category: {productCategoryId}");
+            Console.WriteLine($"Name: {char.ToUpper(productName[0]) + productName.Substring(1)}");
+            Console.WriteLine($"Price: {productPrice.Trim()} SEK ");
+            
 
-        var product = new Product(productName, productPrice, productCategoryId);
+        //Instanserar category och metoden som hämtar alla categories
+        var categories = CategoryService.GetAllCategories().Result;
 
-        Console.WriteLine($"Product ID: {product.Id} \n");
+        //HÄr kopplas frukt ihop m category 
+        var fruitCategory = categories.First(x => x.Id == productCategoryId);
+
+        Console.WriteLine($"\nYour fruit is categorized as {fruitCategory.Name}.\n"); 
+
+            var product = new Fruit(productName, productPrice, productCategoryId);
+
+            Console.WriteLine($"Product ID: {product.Id} \n");
 
 
-        _productService.AddProductToList(product); 
+            _productService.AddProductToList(product);
+        
 
     }
     public void ViewAllProductsMenu()
@@ -91,7 +112,7 @@ public class Product_Menu
         var productList = _productService.GetAllProducts();
 
         Console.Clear();
-        Console.WriteLine("View All Products \n");
+        Console.WriteLine("---LIST OF FRUITS--- \n");
 
         _productService.GetAllProducts();
 
@@ -100,63 +121,100 @@ public class Product_Menu
 
     }
 
-
-
     public void UpdateMenu()
     {
         Console.Clear();
-        Console.WriteLine("View product to update  \n ");
+        Console.WriteLine("---UPDATE FRUIT---  \n ");
 
         Console.WriteLine("Enter product ID: ");
         var Id = Console.ReadLine() ?? "";
 
-        var product = _productService.UpdateProduct(Id); //vill ha denna inom if satsen
-        if (product != null)
+        var responseResult = _productService.GetProduct(Id); 
+        if (responseResult.Success == true)
         {
+
+            var product = responseResult.Result;
             Console.Clear();
-            Console.WriteLine($"We have found your product, press to view."); //Hur kan jag komma åt produktens namn tex här?
+            Console.WriteLine($"We have found your fruit, press to view.");
             Console.ReadKey();
-            //DENNA KÖR JUST NU EFTER METODEN. lös detta. egentligen vill vi ha cw hit från metoden.
 
+            Console.Clear();
+            Console.WriteLine($"Update name or Price for \n");
+            Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
 
+            Console.WriteLine($"\nPress Any key");
 
+            Console.ReadKey();
+            Console.Clear();
+
+            Console.WriteLine($"\n New Name:");
+            product.Name = Console.ReadLine() ?? "";
+
+            Console.WriteLine($"\n New Price:");
+            product.Price = Console.ReadLine() ?? "";
+
+            Console.WriteLine("Press Any key To view update.");
+            Console.Clear();
+            Console.WriteLine("---FRUIT HAVE BEEN UPDATED---");
+            Console.WriteLine($"Updated Name: {product.Name} \n");
+            Console.WriteLine($"Updated price: {product.Price} \n");
+
+            Console.WriteLine("Press Any key to return to Main Menu");
+            Console.ReadKey();
 
         }
         else
         {
-            Console.WriteLine("No product was found \n");
-        }
+            Console.WriteLine("We have not found your fruit. \n Try Again");
+            Console.ReadKey();
+            UpdateMenu();
 
+        }
     }
 
     private void RemoveMenu()
     {
         Console.Clear();
-        Console.WriteLine("Enter product ID to delete product  \n ");
+        Console.WriteLine("---DELETE FRUIT--- \n ");
+        Console.Write("Enter product ID: ");
         var Id = Console.ReadLine() ?? "";
 
-        var product = _productService.DeleteProduct(Id); //Vill att if satsen körs
+        var responseResult = _productService.GetProduct(Id); 
 
-        if (product != null)
+        if (responseResult.Success == true)
         {
+            var product = responseResult.Result;
             Console.Clear();
-            Console.WriteLine($"We have found your product, press to view."); //Hur kan jag komma åt produktens namn tex här?
-            Console.ReadKey();
-            //DENNA KÖR JUST NU IF SATSEN EFTER METODEN. lös detta.
+            
+            Console.WriteLine($"Press to delete fruit \n");
+            Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
 
+            Console.ReadKey();
+            _productService.DeleteProduct(Id);
+            Console.Clear();
+            Console.WriteLine("Fruit has been deleted. \n Press for Main Menu.");
         }
         else
         {
-            Console.WriteLine("No product was found \n");
+            Console.WriteLine("We have not found your fruit. \n Try Again");
+            Console.ReadKey();
+            RemoveMenu();
         }
        
-    }
+    } 
 
     public void SaveToFileMenu()
     {
-        _fileService.SaveToFile("jj"); // HUR Kallar jag på fil menyn - måste jag skicka med string?
-        Console.WriteLine("Your products have been saved to file. \n Press Any key.");
+        Console.Clear();
+        Console.WriteLine("---SAVE TO FILE--- \n Press Any key to save following products to file.\n");
+        
+        _productService.GetAllProducts();
+
         Console.ReadKey();
+        _fileService.SaveToFile("TEST"); // HUR Kallar jag på fil menyn - måste jag skicka med string? BOrde skicka med produkt?
+        Console.WriteLine("Your fruits have been saved to file. \n Press Any key to return to Main Menu.");
+        Console.ReadKey();
+
     }
 
     static void ExitApplicationMenu()
@@ -164,7 +222,7 @@ public class Product_Menu
             Console.Clear();
             Console.WriteLine("Are you sure you want to exit? Enter y/n.");
             var answer = Console.ReadLine(); //lägga till här answer.ToLower?
-            if (answer == "n")
+            if (answer?.ToLower() == "n")
                 Environment.Exit(0);
         }
     }

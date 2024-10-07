@@ -4,12 +4,12 @@ namespace Resources.Interfaces;
 
 public interface IProductService<T, TResult> where T : class where TResult : class
 {
-    public ResponseResult<TResult> AddProductToList(T product); 
-  
+    public ResponseResult<TResult> AddProductToList(T product);
 
+    public ResponseResult<Fruit> GetProductFromName(string Name);
     public ResponseResult<IEnumerable<TResult>> GetAllProducts(); 
 
-    public ResponseResult<TResult> UpdateProduct(string id); 
+    public ResponseResult<TResult> GetProduct(string id); 
 
     public ResponseResult<TResult> DeleteProduct(string id); 
 

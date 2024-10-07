@@ -2,7 +2,7 @@
 namespace Main_App.Models;
 
 
-public class Product
+public class Fruit 
 {
 
 
@@ -15,11 +15,11 @@ public class Product
 
 
 
-    public Product(string _name, string _price,  string _categoryId) //Detta är konstruktorn så att jag kan fylla i direkt i parentesen när jag skapar en produkt //VARFÖR BEHÖVER JAG DETTA?
+    public Fruit(string _name, string _price,  string _categoryId) //Detta är konstruktorn så att jag kan fylla i direkt i parentesen när jag skapar en produkt //VARFÖR BEHÖVER JAG DETTA i detta scenario?
     {
         Name = _name;
         Price = _price;
         CategoryId = _categoryId;
-        //har ej med id då det ska genereras automatiskt
+
     }
 }
