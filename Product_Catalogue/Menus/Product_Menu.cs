@@ -206,13 +206,10 @@ public class Product_Menu
     public void SaveToFileMenu()
     {
         Console.Clear();
-        Console.WriteLine("---SAVE TO FILE--- \n Press Any key to save following products to file.\n");
+        Console.WriteLine("---SAVE TO FILE--- \n Your fruits have been saved to file. \n Press Any key to return to Main Menu.\n");
         
-        _productService.GetAllProducts();
+        _productService.SaveProductsToFile();
 
-        Console.ReadKey();
-        _fileService.SaveToFile("TEST"); // HUR Kallar jag på fil menyn - måste jag skicka med string? BOrde skicka med produkt?
-        Console.WriteLine("Your fruits have been saved to file. \n Press Any key to return to Main Menu.");
         Console.ReadKey();
 
     }
@@ -221,8 +218,11 @@ public class Product_Menu
         {
             Console.Clear();
             Console.WriteLine("Are you sure you want to exit? Enter y/n.");
-            var answer = Console.ReadLine(); //lägga till här answer.ToLower?
-            if (answer?.ToLower() == "n")
-                Environment.Exit(0);
+            var answer = Console.ReadLine();
+        if (answer?.ToLower() == "y")
+        {
+            Environment.Exit(0);
+        }
+        Console.ReadKey();
         }
     }

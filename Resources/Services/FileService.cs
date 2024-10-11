@@ -2,18 +2,15 @@
 using Resources.Interfaces;
 
 namespace Resources.Services;
-
-
 public class FileService : IFileService
 {
 
-    private readonly string _filePath; //HÄR skapar variabel för sökväg till filen
+    private readonly string _filePath; 
 
-    public FileService(string filePath) //Innebär när vi gör instansering av fileservice kommer vi ange sökväg till _filePath som vi sen kan använda
+    public FileService(string filePath) 
     {
         _filePath = filePath;
     }
-
 
     public ResponseResult<string> GetFromFile()
     {

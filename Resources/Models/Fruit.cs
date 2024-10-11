@@ -11,8 +11,9 @@ public class Fruit
 
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
-    public string CategoryId { get; set; } = null!; 
+    public string CategoryId { get; set; } = null!;
 
+    public string DisplayName => $"{Name} {Price} SEK";
 
 
     public Fruit(string _name, string _price,  string _categoryId) //Detta är konstruktorn så att jag kan fylla i direkt i parentesen när jag skapar en produkt //VARFÖR BEHÖVER JAG DETTA i detta scenario?

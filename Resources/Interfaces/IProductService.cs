@@ -12,8 +12,6 @@ public interface IProductService<T, TResult> where T : class where TResult : cla
     public ResponseResult<TResult> GetProduct(string id); 
 
     public ResponseResult<TResult> DeleteProduct(string id); 
-
-    public ResponseResult<TResult> CreateFile();
-
     public ResponseResult<IEnumerable<TResult>> AddProductsFromFile();
+    public ResponseResult<TResult> SaveProductsToFile();
 }

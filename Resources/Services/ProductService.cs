@@ -9,7 +9,9 @@ namespace Main_App.Services;
 
 public class ProductService : IProductService<Fruit, Fruit>
 {
-    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, "FRUITBASKET.json"); // Bygger upp säkväg automatiskt beroende på vilken dator man är på
+
+    private static string fileName = "FruitBasket.json";
+    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, fileName); // Bygger upp säkväg automatiskt beroende på vilken dator man är på
     private readonly IFileService _fileService; 
     /*
     ProductService vill använda fileService och instansierar en lokal variabel som heter
@@ -18,21 +20,54 @@ public class ProductService : IProductService<Fruit, Fruit>
     private List<Fruit> _products = new List<Fruit>(); //HÄR SKAPAS SJÄLVA LISTAN 
 
 
-    public ProductService() // <-- Konstruktorn
+    public ProductService() 
     {
         _fileService = new FileService(_filePath);
 
         _products = [];
-
-        CreateFile(); 
+        AddProductsFromFile();
     }
 
 
-    public ResponseResult<Fruit> CreateFile()
+    public ResponseResult<Fruit> SaveProductsToFile()
     {
-        //gör json konvertering inför att skriva till filen
-        _fileService.SaveToFile("FRUITS"); //Här ska konvertart json format skickas in. 
+        // Läs nuvarande innehåll i fil
+        var json = JsonConvert.SerializeObject(_products);
+        _fileService.SaveToFile(json);
         return new ResponseResult<Fruit> { Success = true };
+    }
+    public ResponseResult<IEnumerable<Fruit>> AddProductsFromFile() 
+    {
+        try
+        {
+            var result = _fileService.GetFromFile();
+
+            // Om Filen  inte finns - skapar ny
+            if(result == null)
+            {
+                SaveProductsToFile(); //Skapas en fil upp i denna metod?
+                return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = "File does not exist" };
+
+            }
+
+            if (result.Success)
+            {
+                _products = JsonConvert.DeserializeObject<List<Fruit>>(result.Result!)!;                
+                return new ResponseResult<IEnumerable<Fruit>> { Success = true, Result = _products };
+            }
+            else
+            {
+                SaveProductsToFile();
+
+            }
+            return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = result.Message };
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = ex.Message };
+        }
+
     }
 
     public ResponseResult<Fruit> GetProductFromName(string Name)
@@ -81,46 +116,18 @@ public class ProductService : IProductService<Fruit, Fruit>
         return new ResponseResult<Fruit> { Success = false, Message = "Name of product already exists, choose new name."};
     }
 
-
-    public ResponseResult<IEnumerable<Fruit>> AddProductsFromFile() //NÄR Ska jag använda denna metod. lägger den till prod från filen till listan?
-    {
-        try
-        {
-            var result = _fileService.GetFromFile();
-            Console.WriteLine(result);
-
-            if (result.Success)
-            {
-                _products = JsonConvert.DeserializeObject<List<Fruit>>(result.Result!)!;
-                Console.WriteLine("Success!!!");
-                return new ResponseResult<IEnumerable<Fruit>> { Success = true, Result = _products };
-            }
-            else
-                Console.WriteLine("hamnar i else");
-            return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = result.Message };
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("hamnar i catch");
-            Console.WriteLine(ex.Message);
-            return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = ex.Message };
-        }
-
-    }
     public ResponseResult<IEnumerable<Fruit>> GetAllProducts()
     {
 
         try
         {
-
-           // AddProductsFromFile();
             foreach (Fruit product in _products)
             {
  
                 Console.WriteLine($"{product.Name}, {product.Price} SEK");
                 Console.WriteLine($"Uniqe ID {product.Id}");
                 Console.WriteLine($"Category {product.CategoryId} \n");
-                //Lägga till att visa category name här? 
+                
             }
         }
         catch (Exception ex)
@@ -133,8 +140,6 @@ public class ProductService : IProductService<Fruit, Fruit>
 
     public ResponseResult<Fruit> GetProduct(string id)
     {
-        //AddProductsFromFile(); 
-
         try
         {
             
@@ -163,8 +168,12 @@ public class ProductService : IProductService<Fruit, Fruit>
         try
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
+            if (product != null)
+            {
 
-            _products.Remove(product);
+                _products.Remove(product);
+
+            }
 
             return new ResponseResult<Fruit> { Success = true, Message = "We have found and deleted product." };
 
