@@ -10,6 +10,7 @@ namespace Main_App.Services;
 public class ProductService : IProductService<Fruit, Fruit>
 {
 
+    public Fruit? CurrentFruit { get; set; }
     private static string fileName = "FruitBasket.json";
     private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, fileName); // Bygger upp säkväg automatiskt beroende på vilken dator man är på
     private readonly IFileService _fileService; 
@@ -24,7 +25,11 @@ public class ProductService : IProductService<Fruit, Fruit>
     {
         _fileService = new FileService(_filePath);
 
+
+
         _products = [];
+
+
         AddProductsFromFile();
     }
 
@@ -102,7 +107,8 @@ public class ProductService : IProductService<Fruit, Fruit>
                 _products.Add(product);
                 Console.WriteLine($"Your product have been added to the List: \nProductname: {product.Name}, Price: {product.Price} SEK , Category is set to {product.CategoryId}");
                 Console.WriteLine("Press Any key to Continue");
-                return new ResponseResult<Fruit> { Success = true }; 
+                SaveProductsToFile(); //La till att de sparas atomatiskt till fil varje gång läggs till
+                return new ResponseResult<Fruit> { Success = true  }; 
 
             }
         }
@@ -134,12 +140,13 @@ public class ProductService : IProductService<Fruit, Fruit>
         {
             Debug.WriteLine($"ERROR: {ex.Message}");
         }
-        return new ResponseResult<IEnumerable<Fruit>> { Success = true }; 
+        return new ResponseResult<IEnumerable<Fruit>> { Success = true, Result = _products }; 
         }
 
 
     public ResponseResult<Fruit> GetProduct(string id)
     {
+        //behöver jag först hämta hem alla produkter/listan?
         try
         {
             

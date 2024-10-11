@@ -98,9 +98,9 @@ public class Product_Menu
 
         Console.WriteLine($"\nYour fruit is categorized as {fruitCategory.Name}.\n"); 
 
-            var product = new Fruit(productName, productPrice, productCategoryId);
+            var product = new Fruit(productName, productPrice, productCategoryId); 
 
-            Console.WriteLine($"Product ID: {product.Id} \n");
+        Console.WriteLine($"Product ID: {product.Id} \n");
 
 
             _productService.AddProductToList(product);

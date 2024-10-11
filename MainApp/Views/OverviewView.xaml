@@ -4,9 +4,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MainApp.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             xmlns:viewmodels="clr-namespace:MainApp.ViewModels"
             
+             xmlns:models="clr-namespace:Main_App.Models;assembly=Resources"
+             d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
+             
+             mc:Ignorable="d" 
+             Background="Pink"
+             d:DesignHeight="600" d:DesignWidth="400">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Button Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                Grid.Row="0" FontSize="25" FontFamily="Segoe MDL2 Assets"  Content="&#xE7BF;"  HorizontalAlignment="Center" Background="PaleVioletRed"  Padding="10"/>
+
+        <ListView Grid.Row="1" 
+                  HorizontalContentAlignment="Stretch"
+                  SelectionMode="Single"
+                  Margin="0,20,0,0" 
+                  Background="LightGoldenrodYellow" 
+                  ItemsSource="{Binding ProductList}">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:Fruit }">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontSize="14" VerticalAlignment="Center" Foreground="CadetBlue"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+
+                            <Button  CommandParameter="{Binding .}" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"  
+                                     FontFamily="Segoe MDL2 Assets" Content="&#xF210;" FontSize="20" BorderThickness="0" Background="LightBlue"/>
+
+                            <Button CommandParameter="{Binding Id}" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"  
+                                     FontFamily="Segoe MDL2 Assets" Content="&#xF13D;" FontSize="20" BorderThickness="0" Background="LightBlue" Margin="10,0,0,0"/>
+
+                        </StackPanel>
+                    </Grid>
+                    
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+        </ListView>
+        
     </Grid>
 </UserControl>

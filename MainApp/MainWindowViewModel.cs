@@ -10,7 +10,7 @@ public partial class MainWindowViewModel : ObservableObject
 public MainWindowViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>(); 
+        CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();
     }
     [ObservableProperty]
     private ObservableObject currentViewModel;
