@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Resources.Interfaces;
 
 
+
+
+
 namespace MainApp.ViewModels;
 
 public partial class CreateViewModel : ObservableObject
@@ -19,20 +22,24 @@ public partial class CreateViewModel : ObservableObject
         _productService = productService;
     }
 
-   // [ObservableProperty]
-   // private Fruit fruit = new("Apple", "5", "2"); //här det som ska in när man skriver in i konsoll product menu
-
-
+    [ObservableProperty]
+    private Fruit fruit = new("", "", ""); //här det som ska in när man skriver in i konsoll product menu
+   
     [RelayCommand]
-    public void Save() //hette Add förut
+    public void Save() 
     {
-       //_productService.AddProductToList(Fruit);
+    _productService.AddProductToList(Fruit);
+    
+       //lägga till if sats här? if (result == Resources.Models.ResponseResult.Success) 1:36 i film 1,41
+       
+         //navigera tillbaka:
+         var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+         var overViewViewModel = _serviceProvider.GetService<OverviewViewModel>();
         
-       //lägga till if sats här? if (result == Resources.Models.ResponseResult.Success)
-      
-        //navigera tillbaka:
-        var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+         overViewViewModel.UpdateFruitList();
+
         viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();
+
     }
 
 

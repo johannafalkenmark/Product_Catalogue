@@ -17,10 +17,7 @@ public partial class OverviewViewModel : ObservableObject
     {
         _serviceProvider = serviceProvider;
         _productService = productService;
-
-       var fruitsInProductService = _productService.GetAllProducts().Result;
-
-        ProductList = new ObservableCollection<Fruit>(fruitsInProductService);
+        UpdateFruitList();
     }
 
 
@@ -46,7 +43,18 @@ public partial class OverviewViewModel : ObservableObject
     public void Delete(string id)
     {
         _productService.DeleteProduct(id);
+        UpdateFruitList();
 
     }
- 
+
+
+    public void UpdateFruitList()
+    {
+        ProductList.Clear();
+        foreach(var fruit in _productService.GetAllProducts().Result)
+        {
+            ProductList.Add(fruit);
+        }
+    }
+
 }

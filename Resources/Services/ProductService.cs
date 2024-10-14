@@ -25,12 +25,14 @@ public class ProductService : IProductService<Fruit, Fruit>
     {
         _fileService = new FileService(_filePath);
 
+       // Fruit fruit1 = new("Päron", "200", "1");
 
 
         _products = [];
-
-
+        
         AddProductsFromFile();
+     //   _products.Add(fruit1);
+
     }
 
 
@@ -100,15 +102,16 @@ public class ProductService : IProductService<Fruit, Fruit>
     {
         try 
         {
-           
-            if (!_products.Any(x => x.Name == product.Name)) 
+            
+
+            if (product != null && !_products.Any(x => x.Name == product.Name)) 
             {
                 
                 _products.Add(product);
-                Console.WriteLine($"Your product have been added to the List: \nProductname: {product.Name}, Price: {product.Price} SEK , Category is set to {product.CategoryId}");
-                Console.WriteLine("Press Any key to Continue");
+             //   Console.WriteLine($"Your product have been added to the List: \nProductname: {product.Name}, Price: {product.Price} SEK , Category is set to {product.CategoryId}");
+             //   Console.WriteLine("Press Any key to Continue");
                 SaveProductsToFile(); //La till att de sparas atomatiskt till fil varje gång läggs till
-                return new ResponseResult<Fruit> { Success = true  }; 
+                return new ResponseResult<Fruit> { Success = true,  }; 
 
             }
         }

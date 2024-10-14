@@ -5,10 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MainApp.Views"
              xmlns:viewmodels="clr-namespace:MainApp.ViewModels"
-            
              xmlns:models="clr-namespace:Main_App.Models;assembly=Resources"
              d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
-             
              mc:Ignorable="d" 
              Background="Pink"
              d:DesignHeight="600" d:DesignWidth="400">
