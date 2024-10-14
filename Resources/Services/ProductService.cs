@@ -149,7 +149,7 @@ public class ProductService : IProductService<Fruit, Fruit>
 
     public ResponseResult<Fruit> GetProduct(string id)
     {
-        //behöver jag först hämta hem alla produkter/listan?
+      
         try
         {
             
@@ -170,8 +170,32 @@ public class ProductService : IProductService<Fruit, Fruit>
         }
     }
 
-  
-  
+
+    public ResponseResult<Fruit> UpdateFruit(Fruit product)
+    {
+        var existingFruit = _products.FirstOrDefault(p => p.Id == product.Id); //ÄR detta currentfruit
+
+
+        if (product != null)
+        {
+            return new ResponseResult<Fruit> { Message = "Fruit not found" };
+        }
+        try
+        {
+            existingFruit = product; //samma här - är detta current fruit
+
+            SaveProductsToFile(); 
+            return new ResponseResult<Fruit> { Success = true };
+
+        }
+        
+        catch (Exception ex)
+        {
+            return new ResponseResult<Fruit> { Success = false, Message = "Fruit not updated" };
+        }
+       
+    }
+
 
     public ResponseResult<Fruit> DeleteProduct(string id)
     {
@@ -182,7 +206,7 @@ public class ProductService : IProductService<Fruit, Fruit>
             {
 
                 _products.Remove(product);
-
+                SaveProductsToFile(); //Eventuellt ta bort
             }
 
             return new ResponseResult<Fruit> { Success = true, Message = "We have found and deleted product." };

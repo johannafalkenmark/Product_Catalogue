@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
              mc:Ignorable="d" 
              Background="Pink"
-             d:DesignHeight="600" d:DesignWidth="400">
+             d:DesignHeight="600" d:DesignWidth="600">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -36,10 +36,10 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
 
                             <Button  CommandParameter="{Binding .}" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"  
-                                     FontFamily="Segoe MDL2 Assets" Content="&#xF210;" FontSize="20" BorderThickness="0" Background="LightBlue"/>
+                                     FontFamily="Segoe MDL2 Assets" Content="&#xF210;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed"/>
 
                             <Button CommandParameter="{Binding Id}" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"  
-                                     FontFamily="Segoe MDL2 Assets" Content="&#xF13D;" FontSize="20" BorderThickness="0" Background="LightBlue" Margin="10,0,0,0"/>
+                                     FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed" Margin="10,0,0,0"/>
 
                         </StackPanel>
                     </Grid>

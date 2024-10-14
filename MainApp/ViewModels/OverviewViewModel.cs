@@ -34,9 +34,13 @@ public partial class OverviewViewModel : ObservableObject
     [RelayCommand]
     public void Edit(Fruit fruit)
     {
-        _productService.CurrentFruit = fruit;
+        // _productService.CurrentFruit = fruit; // 1,53 i filmen. bytte yt till den nedan då fungearde det!
+
+        var editViewModel = _serviceProvider.GetRequiredService<EditViewModel>();
+        editViewModel.Fruit = fruit; 
+
         var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
-        viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<EditViewModel>();
+        viewModel.CurrentViewModel = editViewModel;
     }
 
     [RelayCommand]

@@ -16,4 +16,5 @@ public interface IProductService<T, TResult> where T : class where TResult : cla
     public ResponseResult<TResult> DeleteProduct(string id); 
     public ResponseResult<IEnumerable<TResult>> AddProductsFromFile();
     public ResponseResult<TResult> SaveProductsToFile();
+    public ResponseResult<Fruit> UpdateFruit(Fruit product);
 }
