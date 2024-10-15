@@ -8,18 +8,23 @@
              xmlns:models="clr-namespace:Main_App.Models;assembly=Resources"
              d:DataContext="{d:DesignInstance Type=viewmodels:OverviewViewModel}"
              mc:Ignorable="d" 
-             Background="Pink"
+             Background="PowderBlue"
              d:DesignHeight="600" d:DesignWidth="600">
     <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>   
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="FRUITBASKET"   FontWeight="ExtraBold"  FontSize="35"  HorizontalAlignment="Center" TextElement.FontWeight="Heavy" Foreground="PaleVioletRed" />
+        <TextBlock Text=""   FontSize="25" />
+        <TextBlock Text="&#x1F352;" FontFamily="Segoe UI Symbol" FontSize="60" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
+        <TextBlock Text="&#x1f34c;" FontFamily="Segoe UI Symbol" FontSize="60" HorizontalAlignment="Left" Foreground="PaleVioletRed"/>
 
         <Button Command="{Binding DataContext.AddCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                Grid.Row="0" FontSize="25" FontFamily="Segoe MDL2 Assets"  Content="&#xE7BF;"  HorizontalAlignment="Center" Background="PaleVioletRed"  Padding="10"/>
+                Grid.Row="1" FontSize="25" FontFamily="Segoe MDL2 Assets"  Content="&#xE7BF;"  HorizontalAlignment="Center" Background="PaleVioletRed"  Padding="10"/>
 
-        <ListView Grid.Row="1" 
+        <ListView Grid.Row="2" 
                   HorizontalContentAlignment="Stretch"
                   SelectionMode="Single"
                   Margin="0,20,0,0" 
@@ -32,14 +37,14 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontSize="14" VerticalAlignment="Center" Foreground="CadetBlue"/>
+                        <TextBlock Grid.Column="0" Text="{Binding DisplayName}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Foreground="CadetBlue"/>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
 
                             <Button  CommandParameter="{Binding .}" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"  
-                                     FontFamily="Segoe MDL2 Assets" Content="&#xF210;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed"/>
+                                     FontFamily="Segoe MDL2 Assets" Content="&#xE115;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed"/>
 
                             <Button CommandParameter="{Binding Id}" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"  
-                                     FontFamily="Segoe MDL2 Assets" Content="&#xE74D;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed" Margin="10,0,0,0"/>
+                                     FontFamily="Segoe MDL2 Assets" Content="&#xE10A;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed" Margin="10,0,0,0"/>
 
                         </StackPanel>
                     </Grid>

@@ -8,6 +8,9 @@ public class Main_Menu
     public void MainMenu() 
     {
         Console.Clear();
+        Console.BackgroundColor = ConsoleColor.Yellow;
+        Console.ForegroundColor = ConsoleColor.DarkBlue;
+
         Console.WriteLine("1.".PadRight(10) + "Create New Product");
 
         Console.WriteLine("2.".PadRight(10) + "Show list of all Products");

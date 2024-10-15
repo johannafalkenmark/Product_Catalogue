@@ -4,10 +4,6 @@ using Main_App.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Resources.Interfaces;
 
-
-
-
-
 namespace MainApp.ViewModels;
 
 public partial class CreateViewModel : ObservableObject
@@ -23,12 +19,16 @@ public partial class CreateViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private Fruit fruit = new("", "", ""); //här det som ska in när man skriver in i konsoll product menu
-   
+    private Fruit fruit = new("", "", ""); 
+
+    [ObservableProperty]
+    private string invalidName; //se 15 oktober ca minut 30 del två, ge felmeddelande vid fel namn
+
     [RelayCommand]
     public void Save() 
     {
-    _productService.AddProductToList(Fruit);
+    
+        _productService.AddProductToList(Fruit);
     
        //lägga till if sats här? if (result == Resources.Models.ResponseResult.Success) 1:36 i film 1,41
        
@@ -37,14 +37,14 @@ public partial class CreateViewModel : ObservableObject
          var overViewViewModel = _serviceProvider.GetService<OverviewViewModel>();
         
          overViewViewModel.UpdateFruitList();
-
+      
         viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();
-
+       
     }
 
 
     [RelayCommand]
-    public void Cancel() //hette delete förut
+    public void Cancel() 
     {
         var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
         viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();

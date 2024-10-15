@@ -28,7 +28,7 @@ public partial class EditViewModel : ObservableObject
     {
         
         _productService.UpdateFruit(Fruit);
-      _productService.AddProductToList(Fruit);
+     // _productService.AddProductToList(Fruit);
         
         var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
         var overViewViewModel = _serviceProvider.GetService<OverviewViewModel>();

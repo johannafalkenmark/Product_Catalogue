@@ -12,7 +12,7 @@ public class ProductService : IProductService<Fruit, Fruit>
 
     public Fruit? CurrentFruit { get; set; }
     private static string fileName = "FruitBasket.json";
-    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, fileName); // Bygger upp säkväg automatiskt beroende på vilken dator man är på
+    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, fileName); 
     private readonly IFileService _fileService; 
     /*
     ProductService vill använda fileService och instansierar en lokal variabel som heter
@@ -25,20 +25,16 @@ public class ProductService : IProductService<Fruit, Fruit>
     {
         _fileService = new FileService(_filePath);
 
-       // Fruit fruit1 = new("Päron", "200", "1");
-
 
         _products = [];
         
         AddProductsFromFile();
-     //   _products.Add(fruit1);
 
     }
 
 
     public ResponseResult<Fruit> SaveProductsToFile()
     {
-        // Läs nuvarande innehåll i fil
         var json = JsonConvert.SerializeObject(_products);
         _fileService.SaveToFile(json);
         return new ResponseResult<Fruit> { Success = true };
@@ -49,10 +45,10 @@ public class ProductService : IProductService<Fruit, Fruit>
         {
             var result = _fileService.GetFromFile();
 
-            // Om Filen  inte finns - skapar ny
+            // Om Filen  inte finns - skapar 
             if(result == null)
             {
-                SaveProductsToFile(); //Skapas en fil upp i denna metod?
+                SaveProductsToFile(); 
                 return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = "File does not exist" };
 
             }
@@ -108,9 +104,10 @@ public class ProductService : IProductService<Fruit, Fruit>
             {
                 
                 _products.Add(product);
-             //   Console.WriteLine($"Your product have been added to the List: \nProductname: {product.Name}, Price: {product.Price} SEK , Category is set to {product.CategoryId}");
-             //   Console.WriteLine("Press Any key to Continue");
-                SaveProductsToFile(); //La till att de sparas atomatiskt till fil varje gång läggs till
+              Console.WriteLine($"Your product have been added to the List: \nProductname: {product.Name}, Price: {product.Price} SEK , Category is set to {product.CategoryId}");
+              Console.WriteLine("Press Any key to Continue");
+              SaveProductsToFile(); 
+              
                 return new ResponseResult<Fruit> { Success = true,  }; 
 
             }
@@ -206,7 +203,7 @@ public class ProductService : IProductService<Fruit, Fruit>
             {
 
                 _products.Remove(product);
-                SaveProductsToFile(); //Eventuellt ta bort
+                SaveProductsToFile(); 
             }
 
             return new ResponseResult<Fruit> { Success = true, Message = "We have found and deleted product." };
