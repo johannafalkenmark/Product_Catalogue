@@ -31,8 +31,8 @@
         </StackPanel>
         
         <StackPanel Grid.Row="1">
-            <Button Command="{Binding SaveCommand}" Content="Save changes" Padding="10" Margin="0,10,0,0" FontFamily="Cascadia Code" FontWeight="Bold" Background="SkyBlue"  />
-            <Button Command="{Binding ExitCommand}" Content="Exit" Padding="10" Margin="0,10,0,0" FontFamily="Cascadia Code" FontWeight="Bold" Background="SkyBlue" />
+            <Button Command="{Binding SaveCommand}" Content="Save changes" Padding="10" Margin="0,10,0,0" FontFamily="Cascadia Code" FontWeight="Bold" Foreground="CornflowerBlue" Background="LightGoldenrodYellow"  />
+            <Button Command="{Binding ExitCommand}" Content="Exit" Padding="10" Margin="0,10,0,0" FontFamily="Cascadia Code" FontWeight="Bold" Foreground="CornflowerBlue" Background="LightGoldenrodYellow" />
         </StackPanel>
     </Grid>
 </UserControl>

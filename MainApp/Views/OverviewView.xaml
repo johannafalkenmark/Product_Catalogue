@@ -41,7 +41,7 @@
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
 
                             <Button  CommandParameter="{Binding .}" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"  
-                                     FontFamily="Segoe MDL2 Assets" Content="&#xE115;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed"/>
+                                     FontFamily="Segoe MDL2 Assets" Content="&#xEB7E;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed"/>
 
                             <Button CommandParameter="{Binding Id}" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"  
                                      FontFamily="Segoe MDL2 Assets" Content="&#xE10A;" FontSize="20" BorderThickness="2" BorderBrush="Pink" Background="PaleVioletRed" Margin="10,0,0,0"/>

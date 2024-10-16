@@ -32,9 +32,11 @@ public partial class EditViewModel : ObservableObject
         
         var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
         var overViewViewModel = _serviceProvider.GetService<OverviewViewModel>();
-        viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();
 
         overViewViewModel.UpdateFruitList();
+
+        viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();
+    
     }
 
     [RelayCommand]

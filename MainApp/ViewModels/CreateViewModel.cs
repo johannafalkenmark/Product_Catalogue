@@ -19,15 +19,15 @@ public partial class CreateViewModel : ObservableObject
     }
 
     [ObservableProperty]
-    private Fruit fruit = new("", "", ""); 
+   private Fruit fruit = new("", "", "");
 
     [ObservableProperty]
-    private string invalidName; //se 15 oktober ca minut 30 del två, ge felmeddelande vid fel namn
+    private string invalidName; 
 
     [RelayCommand]
     public void Save() 
     {
-    
+        
         _productService.AddProductToList(Fruit);
     
        //lägga till if sats här? if (result == Resources.Models.ResponseResult.Success) 1:36 i film 1,41

@@ -170,7 +170,7 @@ public class ProductService : IProductService<Fruit, Fruit>
 
     public ResponseResult<Fruit> UpdateFruit(Fruit product)
     {
-        var existingFruit = _products.FirstOrDefault(p => p.Id == product.Id); //ÄR detta currentfruit
+        var existingFruit = _products.FirstOrDefault(p => p.Id == product.Id); 
 
 
         if (product != null)
@@ -179,7 +179,7 @@ public class ProductService : IProductService<Fruit, Fruit>
         }
         try
         {
-            existingFruit = product; //samma här - är detta current fruit
+            existingFruit = product; 
 
             SaveProductsToFile(); 
             return new ResponseResult<Fruit> { Success = true };

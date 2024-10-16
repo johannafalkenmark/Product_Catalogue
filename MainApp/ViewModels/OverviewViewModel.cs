@@ -5,6 +5,7 @@ using Main_App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Resources.Interfaces;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace MainApp.ViewModels;
 
@@ -27,6 +28,7 @@ public partial class OverviewViewModel : ObservableObject
     [RelayCommand]
     public void Add()
     {
+        
         var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
         viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<CreateViewModel>();
     }
