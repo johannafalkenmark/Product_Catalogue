@@ -4,7 +4,6 @@ namespace Resources.Interfaces;
 
 public interface IProductService<T, TResult> where T : class where TResult : class
 {
-   Fruit? CurrentFruit { get; set; }
 
     public ResponseResult<TResult> AddProductToList(T product);
 

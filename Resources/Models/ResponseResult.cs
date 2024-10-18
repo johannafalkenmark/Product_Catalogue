@@ -1,6 +1,4 @@
-﻿
-
-namespace Main_App.Models;
+﻿namespace Main_App.Models;
 
 public class ResponseResult<T> where T : class 
 {

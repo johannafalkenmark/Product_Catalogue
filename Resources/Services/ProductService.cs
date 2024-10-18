@@ -5,33 +5,34 @@ using Resources.Services;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 
-namespace Main_App.Services;
+namespace Resources.Services;
 
 public class ProductService : IProductService<Fruit, Fruit>
 {
 
-    public Fruit? CurrentFruit { get; set; }
+   
     private static string fileName = "FruitBasket.json";
-    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, fileName); 
-    private readonly IFileService _fileService; 
-    /*
-    ProductService vill använda fileService och instansierar en lokal variabel som heter
-    _fileService som kommer användas mer nedan i konstruktorn 
-    */
-    private List<Fruit> _products = new List<Fruit>(); //HÄR SKAPAS SJÄLVA LISTAN 
+    private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, fileName);
+    private readonly IFileService _fileService;
+
+    //LISTAN FÖR FRUKTER SKAPAS HÄR
+    private List<Fruit> _products = []; 
 
 
     public ProductService() 
     {
         _fileService = new FileService(_filePath);
-
-
         _products = [];
-        
         AddProductsFromFile();
 
     }
-
+   //Nedan tillagd för att kunna utföra moq test:
+    public ProductService(IFileService fileService)
+    {
+        _fileService = fileService;
+        _products = [];
+        AddProductsFromFile();
+    }
 
     public ResponseResult<Fruit> SaveProductsToFile()
     {
@@ -45,7 +46,7 @@ public class ProductService : IProductService<Fruit, Fruit>
         {
             var result = _fileService.GetFromFile();
 
-            // Om Filen  inte finns - skapar 
+            // Om Filen  inte finns - skapar fil
             if(result == null)
             {
                 SaveProductsToFile(); 
@@ -98,13 +99,19 @@ public class ProductService : IProductService<Fruit, Fruit>
     {
         try 
         {
-            
+            //LÄGGER TILL CATEGORY HÄR?
+           // var categories = CategoryService.GetAllCategories().Result;
+
+            //HÄr kopplas frukt ihop m category 
+            //var fruitCategory = categories.First(x => x.Id == productCategoryId);
+
+            // Console.WriteLine($"\nYour fruit is categorized as {fruitCategory.Name}.\n");
 
             if (product != null && !_products.Any(x => x.Name == product.Name)) 
             {
                 
                 _products.Add(product);
-              Console.WriteLine($"Your product have been added to the List: \nProductname: {product.Name}, Price: {product.Price} SEK , Category is set to {product.CategoryId}");
+              Console.WriteLine($"Your product have been added to the List. \n");
               Console.WriteLine("Press Any key to Continue");
               SaveProductsToFile(); 
               
@@ -170,27 +177,28 @@ public class ProductService : IProductService<Fruit, Fruit>
 
     public ResponseResult<Fruit> UpdateFruit(Fruit product)
     {
-        var existingFruit = _products.FirstOrDefault(p => p.Id == product.Id); 
 
 
-        if (product != null)
+        var existingFruit = _products.FirstOrDefault(p => p.Id == product.Id);
+
+
+        if (existingFruit == null)
         {
             return new ResponseResult<Fruit> { Message = "Fruit not found" };
         }
         try
         {
-            existingFruit = product; 
+           
+            _products.Remove(existingFruit);
+            _products.Add(product);
 
-            SaveProductsToFile(); 
+            SaveProductsToFile();
             return new ResponseResult<Fruit> { Success = true };
-
         }
-        
         catch (Exception ex)
         {
             return new ResponseResult<Fruit> { Success = false, Message = "Fruit not updated" };
         }
-       
     }
 
 

@@ -1,5 +1,4 @@
-﻿
-namespace Main_App.Menus;
+﻿namespace Main_App.Menus;
 
 public class Main_Menu
 {

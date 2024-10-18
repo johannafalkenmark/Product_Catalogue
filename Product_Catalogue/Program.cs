@@ -7,6 +7,7 @@ Main_Menu _mainMenu = new();
 
 while (true)
 {
+    Console.BackgroundColor = ConsoleColor.Yellow;
     _mainMenu.MainMenu();
     Console.ReadKey();
 }

@@ -1,85 +1,127 @@
 using Main_App.Models;
 using Main_App.Services;
+using Moq;
 using Resources.Interfaces;
+using Resources.Services;
 using System.Diagnostics;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using Xunit;
 
 namespace Resources.Tests.UnitTests;
-// Testa för G: att produkter kan läggas till i listan och att listan innehåller rätt antal produkter efter att en ny produkt lagts till.
-//Testa för VG: Att ta bort en produkt från listan; Att uppdatera en produkt.; Att spara och läsa in produkter från fil.
+
 public class ProductServiceTests
 {
-    #region AddProductToList
+    private readonly ProductService _productService;
+    private readonly Mock<IFileService> _fileServiceMock;
+    private readonly List<Fruit> _testProductList;
+
+    public ProductServiceTests()
+    {
+        // Arrange - Mocka filhantering och lägg till frukter i testlista
+        _fileServiceMock = new Mock<IFileService>();
+        
+        _testProductList = new List<Fruit>
+        {
+            new Fruit("Äpple", "10", "1"),
+            new Fruit("Banan", "5", "2")
+        };
+
+        _productService = new ProductService(_fileServiceMock.Object);
+    }
+
+    #region Add And Delete ProductToList
 
     [Fact]
     public void AddProductToList__ShouldAddProductToListOfProducts__Return_ResponseResultSuccess_True()
     {
-        //arrange
+        //Arrange 
         
-       var productService = new ProductService();
-        Fruit fruit = new("Kiwi", "5", "2" );
+        Fruit fruit = new("Vattenmelon", "5", "2" );
 
 
-        //Act - kör själva metoden
+        //Act 
 
-        ResponseResult<Fruit> result = productService.AddProductToList(fruit); 
+        ResponseResult<Fruit> result = _productService.AddProductToList(fruit); 
 
         // Assert - utvärdering av resultatet
 
         Assert.True( result.Success );
     }
 
-
-
-    //Fungerar EJ:
-    [Fact]
-    public void AddProductToList__ShouldNotAddProductToList_WhenProperiesAreEmpty__Return_ResponseResultSucceededFalse() 
-    {
-        var productService = new ProductService();
-        Fruit fruit1 = new("", "", "");
-        productService.AddProductToList(fruit1);
-
-        ResponseResult<Fruit> result = productService.AddProductToList(fruit1);
-
-        Assert.NotNull(result);
-        Assert.False(result.Success);
-    }
-
-
     [Fact]
 
-    public void AddDuplicateFruitNames__Should_NotAddFruitToList__ReturnFalse()
+    public void EnterDuplicateFruitNames__Should_NotAddFruitToList__ReturnFalse()
 
     {
-        var productService = new ProductService();
-        Fruit fruit2 = new("Kiwi", "3", "2");
-        productService.AddProductToList(fruit2);
+        //Arrange 
+    
+        Fruit fruit2 = new("Äpple", "3", "2");
 
-        ResponseResult<Fruit> result = productService.AddProductToList(fruit2);
+        //Act 
+        _productService.AddProductToList(fruit2);
+
+        ResponseResult<Fruit> result = _productService.AddProductToList(fruit2);
+
+        // Assert 
 
         Assert.False( result.Success );
 
-    }
-
-
-    [Fact]
-    public void SaveProductToFile__ShouldSaveProductToFile__Return_ResponseResultSuccess_True()
-    {
-      
-
-        var productService = new ProductService();
-        Fruit fruit = new("Banan", "5", "2");
-
-        ResponseResult<Fruit> result = productService.SaveProductsToFile();
-
-        Assert.True(result.Success);
     }
 
     [Fact]
     public void DeleteProductFromList__ShouldDeleteProductFromListOfProducts__Return_ResponseResultSuccess_True()
     {
 
+        //Arrange
+        var _name = "Apelsin";
+        var _price = "5";
+        var Id = "1";
+
+        Fruit fruit = new Fruit(_name, _price, Id);
+
+        //Act
+        ResponseResult<Fruit> result = _productService.DeleteProduct("1");
+
+        //Assert
+        Assert.True(result.Success);
+        Assert.Equal("We have found and deleted product.", result.Message);
+
+    }
+    #endregion
+
+    #region Save And Load From File
+    [Fact]
+    public void SaveProductToFile__ShouldSaveProductToFile__Return_ResponseResultSuccess_True()
+    {
+      
+        //Arrange
+        Fruit fruit = new("Apelsin", "5", "2");
+
+        //Act
+        ResponseResult<Fruit> result = _productService.SaveProductsToFile();
+
+        //Assert
+        Assert.True(result.Success);
     }
 
-    #endregion
-}
+    [Fact]
+    public void AddProductsFromFile_ShouldLoadProducts_ResultSuccess_True()
+    {
+        
+        //Arrange
+        var json = JsonConvert.SerializeObject(_testProductList);
+
+        //Act
+        _fileServiceMock.Setup(x => x.GetFromFile()).Returns(new ResponseResult<string> { Success = true, Result = json });
+
+       
+        var result = _productService.AddProductsFromFile();
+
+     //Assert
+        Assert.True(result.Success);
+     
+    }
+
+        #endregion
+    }

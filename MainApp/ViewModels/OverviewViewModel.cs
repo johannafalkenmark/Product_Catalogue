@@ -5,6 +5,7 @@ using Main_App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Resources.Interfaces;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Controls;
 
 namespace MainApp.ViewModels;
@@ -21,7 +22,9 @@ public partial class OverviewViewModel : ObservableObject
         UpdateFruitList();
     }
 
-
+    [ObservableProperty] //LÄGGER IN CATEGORY HÄR
+    private Category category = new("", "");
+    
     [ObservableProperty]
     private ObservableCollection<Fruit> productList = [];
 
@@ -36,10 +39,14 @@ public partial class OverviewViewModel : ObservableObject
     [RelayCommand]
     public void Edit(Fruit fruit)
     {
-        // _productService.CurrentFruit = fruit; // 1,53 i filmen. bytte yt till den nedan då fungearde det!
+       
 
         var editViewModel = _serviceProvider.GetRequiredService<EditViewModel>();
-        editViewModel.Fruit = fruit; 
+
+        var fruittoedit = new Fruit(fruit.Name, fruit.Price, fruit.CategoryId); 
+        fruittoedit.Id = fruit.Id; 
+        editViewModel.Fruit = fruittoedit; 
+
 
         var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
         viewModel.CurrentViewModel = editViewModel;
@@ -48,19 +55,36 @@ public partial class OverviewViewModel : ObservableObject
     [RelayCommand]
     public void Delete(string id)
     {
-        _productService.DeleteProduct(id);
-        UpdateFruitList();
-
+        try
+        {
+            _productService.DeleteProduct(id);
+            UpdateFruitList();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"ERROR: {ex.Message}");
+        }
     }
 
 
     public void UpdateFruitList()
     {
-        ProductList.Clear();
-        foreach(var fruit in _productService.GetAllProducts().Result)
+        try
         {
-            ProductList.Add(fruit);
+            ProductList.Clear();
+            foreach (Fruit fruit in _productService.GetAllProducts().Result)
+            {
+                ProductList.Add(fruit);
+
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"ERROR: {ex.Message}");
         }
     }
+
+
+
 
 }

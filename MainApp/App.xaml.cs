@@ -5,6 +5,7 @@ using MainApp.ViewModels;
 using MainApp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Resources.Interfaces;
+using Resources.Services;
 using System.IO;
 using System.Windows;
 

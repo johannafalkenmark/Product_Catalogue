@@ -1,14 +1,15 @@
 ﻿using Main_App.Models;
 using Main_App.Services;
 using Resources.Interfaces;
-using System.Xml.Linq;
+using Resources.Services;
+using System.Diagnostics;
 
 namespace Main_App.Menus;
 
 public class Product_Menu
 {
     public IProductService<Fruit, Fruit> _productService = new ProductService();
-    private readonly IFileService _fileService; //Vad innebär denna. instansears fileservice här?
+  //  private readonly IFileService _fileService;  OK TA BORT?
 
     public void MenuOptions(string selectedOption)
     {
@@ -51,12 +52,9 @@ public class Product_Menu
         else
         {
             Console.WriteLine("\n Type a number 0-5");
-            Console.ReadKey();
-                
+            Console.ReadKey();         
         }
     }
-
-
 
  
     public void AddNewProductMenu()
@@ -69,13 +67,14 @@ public class Product_Menu
         string productName = Console.ReadLine() ?? "";
 
         var findName = _productService.GetProductFromName(productName);
-
-        if (findName.Success)
+        try
         {
-            Console.WriteLine("Fruitname already exist try again");
-            Console.Write("Enter name of fruit: ");
-            productName = Console.ReadLine() ?? "";
-        }
+            if (findName.Success)
+            {
+                Console.WriteLine("Fruitname already exist try again");
+                Console.Write("Enter name of fruit: ");
+                productName = Console.ReadLine() ?? "";
+            }
             Console.Write("Price of fruit: ");
             string productPrice = Console.ReadLine() ?? "";
 
@@ -88,28 +87,30 @@ public class Product_Menu
 
             Console.WriteLine($"Name: {char.ToUpper(productName[0]) + productName.Substring(1)}");
             Console.WriteLine($"Price: {productPrice.Trim()} SEK ");
-            
 
-        //Instanserar category och metoden som hämtar alla categories
-        var categories = CategoryService.GetAllCategories().Result;
 
-        //HÄr kopplas frukt ihop m category 
-        var fruitCategory = categories.First(x => x.Id == productCategoryId);
+            //Instanserar category och metoden som hämtar alla categories
+            var categories = CategoryService.ShowAllCategories().Result;
 
-        Console.WriteLine($"\nYour fruit is categorized as {fruitCategory.Name}.\n"); 
+            //HÄr kopplas frukt ihop m category 
+            var fruitCategory = categories.First(x => x.Id == productCategoryId);
 
-            var product = new Fruit(productName, productPrice, productCategoryId); 
+            Console.WriteLine($"\nYour fruit is categorized as {fruitCategory.Name}.\n");
 
-        Console.WriteLine($"Product ID: {product.Id} \n");
+            var product = new Fruit(productName, productPrice, productCategoryId);
 
+            Console.WriteLine($"Product ID: {product.Id} \n");
 
             _productService.AddProductToList(product);
-        
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"ERROR: {ex.Message}");
+        }
 
     }
     public void ViewAllProductsMenu()
     {
-        var productList = _productService.GetAllProducts();
 
         Console.Clear();
         Console.WriteLine("---LIST OF FRUITS--- \n");
@@ -129,46 +130,53 @@ public class Product_Menu
         Console.WriteLine("Enter product ID: ");
         var Id = Console.ReadLine() ?? "";
 
-        var responseResult = _productService.GetProduct(Id); 
-        if (responseResult.Success == true)
+        var responseResult = _productService.GetProduct(Id);
+        try
         {
+            if (responseResult.Success == true)
+            {
 
-            var product = responseResult.Result;
-            Console.Clear();
-            Console.WriteLine($"We have found your fruit, press to view.");
-            Console.ReadKey();
+                var product = responseResult.Result;
+                Console.Clear();
+                Console.WriteLine($"We have found your fruit, press to view.");
+                Console.ReadKey();
 
-            Console.Clear();
-            Console.WriteLine($"Update name or Price for \n");
-            Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
+                Console.Clear();
+                Console.WriteLine($"Update name or Price for \n");
+                Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
 
-            Console.WriteLine($"\nPress Any key");
+                Console.WriteLine($"\nPress Any key");
 
-            Console.ReadKey();
-            Console.Clear();
+                Console.ReadKey();
+                Console.Clear();
 
-            Console.WriteLine($"\n New Name:");
-            product.Name = Console.ReadLine() ?? "";
+                Console.WriteLine($"\n New Name:");
+                product.Name = Console.ReadLine() ?? "";
 
-            Console.WriteLine($"\n New Price:");
-            product.Price = Console.ReadLine() ?? "";
+                Console.WriteLine($"\n New Price:");
+                product.Price = Console.ReadLine() ?? "";
 
-            Console.WriteLine("Press Any key To view update.");
-            Console.Clear();
-            Console.WriteLine("---FRUIT HAVE BEEN UPDATED---");
-            Console.WriteLine($"Updated Name: {product.Name} \n");
-            Console.WriteLine($"Updated price: {product.Price} \n");
+                Console.WriteLine("Press Any key To view update.");
+                Console.Clear();
+                Console.WriteLine("---FRUIT HAVE BEEN UPDATED---");
+                Console.WriteLine($"Updated Name: {product.Name} \n");
+                Console.WriteLine($"Updated price: {product.Price} \n");
 
-            Console.WriteLine("Press Any key to return to Main Menu");
-            Console.ReadKey();
+                Console.WriteLine("Press Any key to return to Main Menu");
+                Console.ReadKey();
 
+            }
+            else
+            {
+                Console.WriteLine("We have not found your fruit. \n Try Again");
+                Console.ReadKey();
+                UpdateMenu();
+
+            }
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("We have not found your fruit. \n Try Again");
-            Console.ReadKey();
-            UpdateMenu();
-
+            Debug.WriteLine($"ERROR: {ex.Message}");
         }
     }
 
@@ -179,28 +187,33 @@ public class Product_Menu
         Console.Write("Enter product ID: ");
         var Id = Console.ReadLine() ?? "";
 
-        var responseResult = _productService.GetProduct(Id); 
-
-        if (responseResult.Success == true)
+        var responseResult = _productService.GetProduct(Id);
+        try
         {
-            var product = responseResult.Result;
-            Console.Clear();
-            
-            Console.WriteLine($"Press to delete fruit \n");
-            Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
+            if (responseResult.Success == true)
+            {
+                var product = responseResult.Result;
+                Console.Clear();
 
-            Console.ReadKey();
-            _productService.DeleteProduct(Id);
-            Console.Clear();
-            Console.WriteLine("Fruit has been deleted. \n Press for Main Menu.");
+                Console.WriteLine($"Press to delete fruit \n");
+                Console.WriteLine($"{product.Name}, {product.Price} SEK\n");
+
+                Console.ReadKey();
+                _productService.DeleteProduct(Id);
+                Console.Clear();
+                Console.WriteLine("Fruit has been deleted. \n Press for Main Menu.");
+            }
+            else
+            {
+                Console.WriteLine("We have not found your fruit. \n Try Again");
+                Console.ReadKey();
+                RemoveMenu();
+            }
         }
-        else
+        catch (Exception ex)
         {
-            Console.WriteLine("We have not found your fruit. \n Try Again");
-            Console.ReadKey();
-            RemoveMenu();
+            Debug.WriteLine($"ERROR: {ex.Message}");
         }
-       
     } 
 
     public void SaveToFileMenu()
@@ -219,6 +232,7 @@ public class Product_Menu
             Console.Clear();
             Console.WriteLine("Are you sure you want to exit? Enter y/n.");
             var answer = Console.ReadLine();
+       
         if (answer?.ToLower() == "y")
         {
             Environment.Exit(0);

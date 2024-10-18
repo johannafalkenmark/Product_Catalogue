@@ -5,7 +5,7 @@ namespace Main_App.Services;
 public static class CategoryService
 {
 
-    public static ResponseResult<IEnumerable<Category>> GetAllCategories()
+    public static ResponseResult<IEnumerable<Category>> ShowAllCategories()
     {
         List<Category> categories = new List<Category>();
 
@@ -17,5 +17,7 @@ public static class CategoryService
         return new ResponseResult<IEnumerable<Category>> { Success = true, Result = categories};
 
     }
+
+
 
 }
