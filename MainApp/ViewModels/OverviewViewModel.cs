@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Main_App.Models;
-using Main_App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Resources.Interfaces;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Controls;
+using Resources.Services;
 
 namespace MainApp.ViewModels;
 
@@ -14,15 +14,21 @@ public partial class OverviewViewModel : ObservableObject
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly IProductService<Fruit, Fruit> _productService;
+    // LÄGG TILL _categoryService
+   private readonly CategoryService _categoryService;
 
-    public OverviewViewModel(IServiceProvider serviceProvider, IProductService<Fruit, Fruit> productService)
+
+    public OverviewViewModel(IServiceProvider serviceProvider, IProductService<Fruit, Fruit> productService, CategoryService categoryService)
     {
         _serviceProvider = serviceProvider;
         _productService = productService;
+        _categoryService = categoryService;
+        // OCH ÄVEN HÄR
+
         UpdateFruitList();
     }
 
-    [ObservableProperty] //LÄGGER IN CATEGORY HÄR
+    [ObservableProperty] //LÄGGER IN CATEGORY HÄR(?)
     private Category category = new("", "");
     
     [ObservableProperty]
@@ -72,10 +78,27 @@ public partial class OverviewViewModel : ObservableObject
         try
         {
             ProductList.Clear();
-            foreach (Fruit fruit in _productService.GetAllProducts().Result)
-            {
-                ProductList.Add(fruit);
+            
+            var categories = _categoryService.ShowAllCategories().Result;
+            var fruits = _productService.GetAllProducts().Result;
 
+            if (fruits != null && categories != null)
+            {
+
+                foreach (Fruit fruit in fruits)
+                {
+
+                    // Plocka hem kategori typ
+                    var category = categories.First(category => category.Id == fruit.CategoryId);
+                    // Lägg till det på ditt fruit objekt
+                    if (category != null)
+                    {
+                        fruit.CategoryName = category.Name;
+                    }
+
+                    ProductList.Add(fruit);
+
+                }
             }
         }
         catch (Exception ex)

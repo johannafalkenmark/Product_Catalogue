@@ -1,11 +1,10 @@
 ﻿
 using Main_App.Models;
-using Main_App.Services;
+using Resources.Services;
 using MainApp.ViewModels;
 using MainApp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Resources.Interfaces;
-using Resources.Services;
 using System.IO;
 using System.Windows;
 
@@ -19,6 +18,7 @@ public partial class App : Application
     {
         //services.AddSingleton < IProductService<Fruit, Fruit>, ProductService>();
          services.AddSingleton<IProductService<Fruit, Fruit>>(new ProductService());
+         services.AddSingleton<CategoryService>(new CategoryService());
 
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();

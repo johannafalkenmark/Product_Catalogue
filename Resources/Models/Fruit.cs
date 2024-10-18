@@ -9,7 +9,9 @@ public class Fruit
 
     public string CategoryId { get; set; } = null!;
 
-    public string DisplayName => $"{Name} {Price} SEK \n{Id}";
+    public string DisplayName => $"{Name} {Price} SEK \n{Id}  \n{CategoryName}";
+
+    public string CategoryName { get; set; } = null!;
 
 
      public Fruit(string _name, string _price, string _categoryId)  
@@ -20,3 +22,4 @@ public class Fruit
     }
     
 }
+

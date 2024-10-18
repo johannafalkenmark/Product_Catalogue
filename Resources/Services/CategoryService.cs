@@ -1,20 +1,21 @@
 ﻿using Main_App.Models;
 
-namespace Main_App.Services;
+namespace Resources.Services;
 
-public static class CategoryService
+public class CategoryService
 {
 
-    public static ResponseResult<IEnumerable<Category>> ShowAllCategories()
+    public ResponseResult<IEnumerable<Category>> ShowAllCategories()
     {
         List<Category> categories = new List<Category>();
 
-        categories.Add(new Category("LOCAL FRUIT", "1")); 
-        
-        categories.Add(new Category("EXOTIC FRUIT", "2")); 
-       
+        categories.Add(new Category("LOCAL FRUIT", "1"));
 
-        return new ResponseResult<IEnumerable<Category>> { Success = true, Result = categories};
+        categories.Add(new Category("EXOTIC FRUIT", "2"));
+        categories.Add(new Category("DISGUSTING FRUIT", "3"));
+
+
+        return new ResponseResult<IEnumerable<Category>> { Success = true, Result = categories };
 
     }
 

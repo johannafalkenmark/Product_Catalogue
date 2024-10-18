@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Main_App.Models;
-using Main_App.Services;
+using Resources.Services;
 using Microsoft.Extensions.DependencyInjection;
 using MySqlX.XDevAPI.Common;
 using Resources.Interfaces;
@@ -38,7 +38,7 @@ public partial class CreateViewModel(IServiceProvider serviceProvider, IProductS
             var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
             var overViewViewModel = _serviceProvider.GetService<OverviewViewModel>();
 
-            overViewViewModel.UpdateFruitList();
+            overViewViewModel?.UpdateFruitList();
 
             viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();
 

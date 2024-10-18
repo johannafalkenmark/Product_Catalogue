@@ -1,5 +1,4 @@
 ﻿using Main_App.Models;
-using Main_App.Services;
 using Resources.Interfaces;
 using Resources.Services;
 using System.Diagnostics;
@@ -9,6 +8,7 @@ namespace Main_App.Menus;
 public class Product_Menu
 {
     public IProductService<Fruit, Fruit> _productService = new ProductService();
+    public CategoryService _categoryService = new CategoryService();
   //  private readonly IFileService _fileService;  OK TA BORT?
 
     public void MenuOptions(string selectedOption)
@@ -90,19 +90,24 @@ public class Product_Menu
 
 
             //Instanserar category och metoden som hämtar alla categories
-            var categories = CategoryService.ShowAllCategories().Result;
+            var categories = _categoryService.ShowAllCategories().Result;
 
             //HÄr kopplas frukt ihop m category 
-            var fruitCategory = categories.First(x => x.Id == productCategoryId);
+            if (categories != null)
+            {
+                var fruitCategory = categories.First(x => x.Id == productCategoryId);
 
-            Console.WriteLine($"\nYour fruit is categorized as {fruitCategory.Name}.\n");
 
-            var product = new Fruit(productName, productPrice, productCategoryId);
+                Console.WriteLine($"\nYour fruit is categorized as {fruitCategory.Name}.\n");
+            }
 
-            Console.WriteLine($"Product ID: {product.Id} \n");
+                var product = new Fruit(productName, productPrice, productCategoryId);
 
-            _productService.AddProductToList(product);
-        }
+                Console.WriteLine($"Product ID: {product.Id} \n");
+
+                _productService.AddProductToList(product);
+            
+            }
         catch (Exception ex)
         {
             Debug.WriteLine($"ERROR: {ex.Message}");
@@ -133,7 +138,7 @@ public class Product_Menu
         var responseResult = _productService.GetProduct(Id);
         try
         {
-            if (responseResult.Success == true)
+            if (responseResult.Success == true && responseResult.Result != null)
             {
 
                 var product = responseResult.Result;
@@ -190,7 +195,7 @@ public class Product_Menu
         var responseResult = _productService.GetProduct(Id);
         try
         {
-            if (responseResult.Success == true)
+            if (responseResult.Success == true && responseResult.Result != null)
             {
                 var product = responseResult.Result;
                 Console.Clear();

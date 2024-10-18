@@ -197,7 +197,7 @@ public class ProductService : IProductService<Fruit, Fruit>
         }
         catch (Exception ex)
         {
-            return new ResponseResult<Fruit> { Success = false, Message = "Fruit not updated" };
+            return new ResponseResult<Fruit> { Success = false, Message = ex.Message };
         }
     }
 
