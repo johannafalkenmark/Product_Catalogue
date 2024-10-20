@@ -30,17 +30,14 @@ public class ProductServiceTests
     [Fact]
     public void AddProductToList__ShouldAddProductToListOfProducts__Return_ResponseResultSuccess_True()
     {
-        //Arrange 
-        
-        Fruit fruit = new("Vattenmelon", "5", "2" );
+        //Arrange   
+        Fruit fruit = new("Honungsmelon", "5", "2" );
 
 
         //Act 
-
         ResponseResult<Fruit> result = _productService.AddProductToList(fruit); 
 
         // Assert 
-
         Assert.True( result.Success );
     }
 
@@ -50,7 +47,6 @@ public class ProductServiceTests
 
     {
         //Arrange 
-    
         Fruit fruit2 = new("Äpple", "3", "2");
 
         //Act 
@@ -59,7 +55,6 @@ public class ProductServiceTests
         ResponseResult<Fruit> result = _productService.AddProductToList(fruit2);
 
         // Assert 
-
         Assert.False( result.Success );
 
     }

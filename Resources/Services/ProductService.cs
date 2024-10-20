@@ -40,7 +40,7 @@ public class ProductService : IProductService<Fruit, Fruit>
         try
         {
             var result = _fileService.GetFromFile();
-            // Om Filen  inte finns - skapar fil
+            // Om Filen inte finns - skapar fil
             if(result == null)
             {
                 SaveProductsToFile(); 

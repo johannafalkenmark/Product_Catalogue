@@ -9,7 +9,6 @@ public class Product_Menu
 {
     public IProductService<Fruit, Fruit> _productService = new ProductService();
     public CategoryService _categoryService = new CategoryService();
-  //  private readonly IFileService _fileService;  OK TA BORT?
 
     public void MenuOptions(string selectedOption)
     {

@@ -31,7 +31,7 @@ public partial class EditViewModel : ObservableObject
         var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
         var overViewViewModel = _serviceProvider.GetService<OverviewViewModel>();
 
-        overViewViewModel.UpdateFruitList();
+        overViewViewModel?.UpdateFruitList();
 
         viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();
     

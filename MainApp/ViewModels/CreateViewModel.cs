@@ -6,9 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MySqlX.XDevAPI.Common;
 using Resources.Interfaces;
 
-
-
-
 namespace MainApp.ViewModels;
 
 public partial class CreateViewModel(IServiceProvider serviceProvider, IProductService<Fruit, Fruit> productService) : ObservableObject
@@ -29,11 +26,6 @@ public partial class CreateViewModel(IServiceProvider serviceProvider, IProductS
         
        _productService.AddProductToList(Fruit);
 
-        
-            //lägga till if sats här if (result == Resources.Models.ResponseResult.Success) 1:36 i film 1,41 DEN LYCKAS EJ HITTA TILL MODELS DÄEÖFR GÅR DET EJ
-            //else visa invalid name! som nu är mappat ocg föreberett i vyn
-
-
             var viewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
             var overViewViewModel = _serviceProvider.GetService<OverviewViewModel>();
 
@@ -41,11 +33,7 @@ public partial class CreateViewModel(IServiceProvider serviceProvider, IProductS
 
             viewModel.CurrentViewModel = _serviceProvider.GetRequiredService<OverviewViewModel>();
 
-            Fruit = new("", "", "");
-
-        
-        //Else  InvalidName == "Name already exists";
-        
+            Fruit = new("", "", "");   
     }
 
 

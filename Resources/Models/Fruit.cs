@@ -9,7 +9,7 @@ public class Fruit
 
     public string CategoryId { get; set; } = null!;
 
-    public string DisplayName => $"{Name} {Price} SEK \n{Id}  \n{CategoryName}";
+    public string DisplayName => $"{Name} {Price} SEK \nID: {Id}  \n{CategoryName}";
 
     public string CategoryName { get; set; } = null!;
 
