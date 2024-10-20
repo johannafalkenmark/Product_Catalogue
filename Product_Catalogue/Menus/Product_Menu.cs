@@ -89,10 +89,8 @@ public class Product_Menu
             Console.WriteLine($"Price: {productPrice.Trim()} SEK ");
 
 
-            //Instanserar category och metoden som hämtar alla categories
             var categories = _categoryService.ShowAllCategories().Result;
 
-            //HÄr kopplas frukt ihop m category 
             if (categories != null)
             {
                 var fruitCategory = categories.First(x => x.Id == productCategoryId);

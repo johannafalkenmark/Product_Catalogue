@@ -12,13 +12,10 @@ public class CategoryService
         categories.Add(new Category("LOCAL FRUIT", "1"));
 
         categories.Add(new Category("EXOTIC FRUIT", "2"));
-        categories.Add(new Category("DISGUSTING FRUIT", "3"));
 
 
         return new ResponseResult<IEnumerable<Category>> { Success = true, Result = categories };
 
     }
-
-
 
 }

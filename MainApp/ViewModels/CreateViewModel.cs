@@ -8,6 +8,7 @@ using Resources.Interfaces;
 
 
 
+
 namespace MainApp.ViewModels;
 
 public partial class CreateViewModel(IServiceProvider serviceProvider, IProductService<Fruit, Fruit> productService) : ObservableObject
@@ -26,11 +27,9 @@ public partial class CreateViewModel(IServiceProvider serviceProvider, IProductS
     public void Save() 
     {
         
-      _productService.AddProductToList(Fruit);
-      
+       _productService.AddProductToList(Fruit);
 
-        {
-
+        
             //lägga till if sats här if (result == Resources.Models.ResponseResult.Success) 1:36 i film 1,41 DEN LYCKAS EJ HITTA TILL MODELS DÄEÖFR GÅR DET EJ
             //else visa invalid name! som nu är mappat ocg föreberett i vyn
 
@@ -44,8 +43,9 @@ public partial class CreateViewModel(IServiceProvider serviceProvider, IProductS
 
             Fruit = new("", "", "");
 
-        }
-
+        
+        //Else  InvalidName == "Name already exists";
+        
     }
 
 

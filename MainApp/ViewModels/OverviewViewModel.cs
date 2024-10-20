@@ -14,7 +14,6 @@ public partial class OverviewViewModel : ObservableObject
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly IProductService<Fruit, Fruit> _productService;
-    // LÄGG TILL _categoryService
    private readonly CategoryService _categoryService;
 
 
@@ -23,12 +22,12 @@ public partial class OverviewViewModel : ObservableObject
         _serviceProvider = serviceProvider;
         _productService = productService;
         _categoryService = categoryService;
-        // OCH ÄVEN HÄR
+      
 
         UpdateFruitList();
     }
 
-    [ObservableProperty] //LÄGGER IN CATEGORY HÄR(?)
+    [ObservableProperty] 
     private Category category = new("", "");
     
     [ObservableProperty]
@@ -88,14 +87,19 @@ public partial class OverviewViewModel : ObservableObject
                 foreach (Fruit fruit in fruits)
                 {
 
-                    // Plocka hem kategori typ
-                    var category = categories.First(category => category.Id == fruit.CategoryId);
-                    // Lägg till det på ditt fruit objekt
-                    if (category != null)
+                    if(fruit.CategoryId == "1" || fruit.CategoryId == "2" )
                     {
-                        fruit.CategoryName = category.Name;
-                    }
+                        var category = categories.First(category => category.Id == fruit.CategoryId);
+                        
+                        if (category != null)
+                        {
+                            fruit.CategoryName = category.Name;
+                        }
 
+                    } else
+                    {
+                        fruit.CategoryName = "HOLIDAY FRUIT";
+                    }
                     ProductList.Add(fruit);
 
                 }
@@ -106,8 +110,6 @@ public partial class OverviewViewModel : ObservableObject
             Debug.WriteLine($"ERROR: {ex.Message}");
         }
     }
-
-
 
 
 }

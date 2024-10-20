@@ -5,7 +5,6 @@ using MainApp.ViewModels;
 using MainApp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Resources.Interfaces;
-using System.IO;
 using System.Windows;
 
 namespace MainApp;
@@ -16,7 +15,6 @@ public partial class App : Application
    
     private void ConfigureServices(IServiceCollection services)
     {
-        //services.AddSingleton < IProductService<Fruit, Fruit>, ProductService>();
          services.AddSingleton<IProductService<Fruit, Fruit>>(new ProductService());
          services.AddSingleton<CategoryService>(new CategoryService());
 
@@ -41,8 +39,6 @@ public partial class App : Application
         ConfigureServices(serviceCollection);
 
         ServiceProvider = serviceCollection.BuildServiceProvider();
-
-      //  var productService = ServiceProvider.GetService<ProductService>();
 
         var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
         mainWindow.DataContext = ServiceProvider.GetRequiredService<MainWindowViewModel>();

@@ -1,23 +1,18 @@
 ﻿using Main_App.Models;
 using Newtonsoft.Json;
 using Resources.Interfaces;
-using Resources.Services;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 
 namespace Resources.Services;
 
 public class ProductService : IProductService<Fruit, Fruit>
 {
-
-   
     private static string fileName = "FruitBasket.json";
     private static readonly string _filePath = Path.Combine(AppContext.BaseDirectory, fileName);
     private readonly IFileService _fileService;
 
     //LISTAN FÖR FRUKTER SKAPAS HÄR
     private List<Fruit> _products = []; 
-
 
     public ProductService() 
     {
@@ -45,13 +40,11 @@ public class ProductService : IProductService<Fruit, Fruit>
         try
         {
             var result = _fileService.GetFromFile();
-
             // Om Filen  inte finns - skapar fil
             if(result == null)
             {
                 SaveProductsToFile(); 
                 return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = "File does not exist" };
-
             }
 
             if (result.Success)
@@ -62,7 +55,6 @@ public class ProductService : IProductService<Fruit, Fruit>
             else
             {
                 SaveProductsToFile();
-
             }
             return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = result.Message };
         }
@@ -71,7 +63,6 @@ public class ProductService : IProductService<Fruit, Fruit>
             Console.WriteLine(ex.Message);
             return new ResponseResult<IEnumerable<Fruit>> { Success = false, Message = ex.Message };
         }
-
     }
 
     public ResponseResult<Fruit> GetProductFromName(string Name)
@@ -84,14 +75,12 @@ public class ProductService : IProductService<Fruit, Fruit>
                 return new ResponseResult<Fruit> { Message = "Can't find productname", Success = false };
             }
             return new ResponseResult<Fruit> {Result = result, Success = true };
-            
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"ERROR: {ex.Message}");
             return new ResponseResult<Fruit> { Success = false, Message = ex.Message };
         }
-
     }
 
 
@@ -99,14 +88,6 @@ public class ProductService : IProductService<Fruit, Fruit>
     {
         try 
         {
-            //LÄGGER TILL CATEGORY HÄR?
-           // var categories = CategoryService.GetAllCategories().Result;
-
-            //HÄr kopplas frukt ihop m category 
-            //var fruitCategory = categories.First(x => x.Id == productCategoryId);
-
-            // Console.WriteLine($"\nYour fruit is categorized as {fruitCategory.Name}.\n");
-
             if (product != null && !_products.Any(x => x.Name == product.Name)) 
             {
                 
@@ -115,15 +96,13 @@ public class ProductService : IProductService<Fruit, Fruit>
               Console.WriteLine("Press Any key to Continue");
               SaveProductsToFile(); 
               
-                return new ResponseResult<Fruit> { Success = true,  }; 
-
+               return new ResponseResult<Fruit> { Success = true,  }; 
             }
         }
         catch (Exception ex)
                 {
                 Debug.WriteLine($"ERROR: {ex.Message}");
                 }
-
 
         Console.WriteLine("\n WARNING! Productname already exists, product has not been saved to list or file.");
         return new ResponseResult<Fruit> { Success = false, Message = "Name of product already exists, choose new name."};
@@ -177,8 +156,6 @@ public class ProductService : IProductService<Fruit, Fruit>
 
     public ResponseResult<Fruit> UpdateFruit(Fruit product)
     {
-
-
         var existingFruit = _products.FirstOrDefault(p => p.Id == product.Id);
 
 
@@ -222,7 +199,5 @@ public class ProductService : IProductService<Fruit, Fruit>
             return new ResponseResult<Fruit> { Success = false, Message = "We have not deleted product" };
         }
         }
-
-
 }
 

@@ -1,12 +1,8 @@
 using Main_App.Models;
-using Main_App.Services;
 using Moq;
 using Resources.Interfaces;
 using Resources.Services;
-using System.Diagnostics;
-using System.Xml.Linq;
 using Newtonsoft.Json;
-using Xunit;
 
 namespace Resources.Tests.UnitTests;
 
@@ -18,7 +14,6 @@ public class ProductServiceTests
 
     public ProductServiceTests()
     {
-        // Arrange - Mocka filhantering och lägg till frukter i testlista
         _fileServiceMock = new Mock<IFileService>();
         
         _testProductList = new List<Fruit>
@@ -44,7 +39,7 @@ public class ProductServiceTests
 
         ResponseResult<Fruit> result = _productService.AddProductToList(fruit); 
 
-        // Assert - utvärdering av resultatet
+        // Assert 
 
         Assert.True( result.Success );
     }
