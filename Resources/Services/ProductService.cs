@@ -88,6 +88,7 @@ public class ProductService : IProductService<Fruit, Fruit>
     {
         try 
         {
+            //Kontroll om produkt med samma namn redan finns
             if (product != null && !_products.Any(x => x.Name == product.Name)) 
             {
                 
